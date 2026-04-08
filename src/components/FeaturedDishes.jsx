@@ -28,14 +28,14 @@ export default function FeaturedDishes() {
                 />
               </div>
 
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              {/* Gradient overlay — stronger for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
               {/* Text overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-5">
-                <h3 className="font-display text-xl italic mb-1">{item.name}</h3>
-                <p className="text-text-muted text-sm mb-2">{item.desc}</p>
-                <span className="text-accent font-display text-lg">{item.price.toFixed(2)}&euro;</span>
+                <h3 className="font-display text-xl italic mb-1 drop-shadow-lg">{item.name}</h3>
+                <p className="text-white/80 text-sm mb-2 drop-shadow-md">{item.desc}</p>
+                <span className="text-accent font-display text-lg drop-shadow-md">{item.price.toFixed(2)}&euro;</span>
               </div>
             </div>
           ))}

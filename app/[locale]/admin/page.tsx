@@ -1,0 +1,120 @@
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { createServerClient } from '@/lib/supabase-server';
+import { verifyAdminSession } from '@/lib/admin-auth';
+import StatusDropdown from './StatusDropdown';
+
+export const dynamic = 'force-dynamic';
+
+export default async function AdminDashboard({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const cookieStore = await cookies();
+  const token = cookieStore.get('lotus_admin_token')?.value;
+  if (!token || !(await verifyAdminSession(token))) {
+    redirect(`/${locale}/admin/login`);
+  }
+
+  const supabase = createServerClient();
+
+  const { data: reservations } = await supabase
+    .from('lotus_reservations')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  const { data: orders } = await supabase
+    .from('lotus_orders')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  return (
+    <div className="space-y-10">
+      <h1 className="text-2xl font-display text-accent">Dashboard</h1>
+
+      {/* Reservations */}
+      <section>
+        <h2 className="text-lg font-semibold text-text mb-4">Recent Reservations</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-left">
+                <th className="pb-2 pr-4">Date</th>
+                <th className="pb-2 pr-4">Time</th>
+                <th className="pb-2 pr-4">Guests</th>
+                <th className="pb-2 pr-4">Name</th>
+                <th className="pb-2 pr-4">Email</th>
+                <th className="pb-2 pr-4">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(reservations || []).map((r: any) => (
+                <tr key={r.id} className="border-b border-border/50">
+                  <td className="py-2 pr-4">{r.date}</td>
+                  <td className="py-2 pr-4">{r.time}</td>
+                  <td className="py-2 pr-4">{r.guests}</td>
+                  <td className="py-2 pr-4">{r.first_name} {r.last_name}</td>
+                  <td className="py-2 pr-4 text-text-muted">{r.email}</td>
+                  <td className="py-2 pr-4">
+                    <StatusDropdown
+                      id={r.id}
+                      currentStatus={r.status || 'pending'}
+                      endpoint="/api/admin/reservations"
+                      options={['pending', 'confirmed', 'cancelled', 'completed']}
+                    />
+                  </td>
+                </tr>
+              ))}
+              {(!reservations || reservations.length === 0) && (
+                <tr><td colSpan={6} className="py-4 text-text-muted text-center">No reservations yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Orders */}
+      <section>
+        <h2 className="text-lg font-semibold text-text mb-4">Recent Orders</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-left">
+                <th className="pb-2 pr-4">Date</th>
+                <th className="pb-2 pr-4">Customer</th>
+                <th className="pb-2 pr-4">Total</th>
+                <th className="pb-2 pr-4">Items</th>
+                <th className="pb-2 pr-4">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(orders || []).map((o: any) => (
+                <tr key={o.id} className="border-b border-border/50">
+                  <td className="py-2 pr-4">{new Date(o.created_at).toLocaleDateString()}</td>
+                  <td className="py-2 pr-4">{o.customer_name}</td>
+                  <td className="py-2 pr-4">{Number(o.total).toFixed(2)}&euro;</td>
+                  <td className="py-2 pr-4">{Array.isArray(o.items) ? o.items.length : 0}</td>
+                  <td className="py-2 pr-4">
+                    <StatusDropdown
+                      id={o.id}
+                      currentStatus={o.status || 'pending'}
+                      endpoint="/api/admin/orders"
+                      options={['pending', 'preparing', 'ready', 'completed', 'cancelled']}
+                    />
+                  </td>
+                </tr>
+              ))}
+              {(!orders || orders.length === 0) && (
+                <tr><td colSpan={5} className="py-4 text-text-muted text-center">No orders yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}

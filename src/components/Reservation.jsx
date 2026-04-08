@@ -1,6 +1,109 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+
+const dayNamesFr = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+const dayNamesNl = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+const dayNamesEn = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const monthNamesFr = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const monthNamesNl = ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
+const monthNamesEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function DatePicker({ value, onChange, lng }) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const [viewDate, setViewDate] = useState(value ? new Date(value + 'T00:00:00') : new Date());
+
+  const dayNames = lng === 'nl' ? dayNamesNl : lng === 'en' ? dayNamesEn : dayNamesFr;
+  const monthNames = lng === 'nl' ? monthNamesNl : lng === 'en' ? monthNamesEn : monthNamesFr;
+
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+
+  const days = useMemo(() => {
+    const firstDay = new Date(year, month, 1);
+    const startOffset = (firstDay.getDay() + 6) % 7; // Monday = 0
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < startOffset; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+    return cells;
+  }, [year, month]);
+
+  function prevMonth() {
+    setViewDate(new Date(year, month - 1, 1));
+  }
+  function nextMonth() {
+    setViewDate(new Date(year, month + 1, 1));
+  }
+
+  function selectDay(d) {
+    const selected = new Date(year, month, d);
+    if (selected < today) return;
+    // Monday (getDay()===1) is closed
+    if (selected.getDay() === 1) return;
+    const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    onChange(iso);
+  }
+
+  const selectedIso = value;
+
+  return (
+    <div className="bg-surface border border-border rounded-lg p-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={prevMonth} className="text-text-muted hover:text-text p-1">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <span className="font-display text-lg">{monthNames[month]} {year}</span>
+        <button onClick={nextMonth} className="text-text-muted hover:text-text p-1">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Day names */}
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {dayNames.map((d) => (
+          <div key={d} className="text-center text-xs text-text-muted py-1">{d}</div>
+        ))}
+      </div>
+
+      {/* Day cells */}
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((d, i) => {
+          if (d === null) return <div key={`empty-${i}`} />;
+          const cellDate = new Date(year, month, d);
+          const isPast = cellDate < today;
+          const isMonday = cellDate.getDay() === 1;
+          const isDisabled = isPast || isMonday;
+          const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+          const isSelected = iso === selectedIso;
+          const isToday = cellDate.getTime() === today.getTime();
+
+          return (
+            <button
+              key={d}
+              onClick={() => !isDisabled && selectDay(d)}
+              disabled={isDisabled}
+              className={`aspect-square flex items-center justify-center text-sm rounded transition-colors
+                ${isSelected ? 'bg-accent text-bg font-medium' : ''}
+                ${isToday && !isSelected ? 'border border-accent text-accent' : ''}
+                ${isDisabled ? 'text-text-muted/30 cursor-not-allowed' : ''}
+                ${!isSelected && !isDisabled ? 'hover:bg-border text-text' : ''}
+              `}
+            >
+              {d}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function generateTimeSlots() {
   const slots = [];
@@ -26,7 +129,7 @@ function generateTimeSlots() {
 const timeSlots = generateTimeSlots();
 
 export default function Reservation() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { ref, className } = useScrollReveal();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
@@ -93,11 +196,10 @@ export default function Reservation() {
             {/* Date */}
             <div>
               <label className="block text-sm text-text-muted mb-2">{t('reservation.date')}</label>
-              <input
-                type="date"
+              <DatePicker
                 value={form.date}
-                onChange={(e) => update('date', e.target.value)}
-                className="w-full bg-surface border border-border rounded px-4 py-3 text-text focus:outline-none focus:border-accent"
+                onChange={(iso) => update('date', iso)}
+                lng={i18n.language}
               />
             </div>
 

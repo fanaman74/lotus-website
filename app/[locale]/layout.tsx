@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Chango, Jost, Cormorant_Garamond } from 'next/font/google';
 import '../globals.css';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { OrderProvider } from '@/components/OrderProvider';
 
 const chango = Chango({ weight: '400', subsets: ['latin'], variable: '--font-chango', display: 'swap' });
 const jost = Jost({ subsets: ['latin'], variable: '--font-jost', display: 'swap' });
@@ -25,7 +27,11 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning className={`${chango.variable} ${jost.variable} ${cormorant.variable}`}>
       <body className="font-body bg-bg text-text">
-        {children}
+        <ThemeProvider>
+          <OrderProvider>
+            {children}
+          </OrderProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

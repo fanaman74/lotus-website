@@ -5,6 +5,7 @@ import About from './components/About';
 import FeaturedDishes from './components/FeaturedDishes';
 import Menu from './components/Menu';
 import Events from './components/Events';
+import TakeawayPanel from './components/TakeawayPanel';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <FeaturedDishes />
         <Menu />
         <Events />
+        <TakeawayPanel />
       </div>
     </OrderProvider>
   );

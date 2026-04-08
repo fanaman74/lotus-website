@@ -12,6 +12,9 @@
 
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Jost', 'DM Sans', sans-serif;
+
+  --spacing-nav: 72px;
+  --container-container: 1200px;
 }
 
 html {

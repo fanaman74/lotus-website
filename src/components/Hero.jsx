@@ -14,8 +14,9 @@ export default function Hero() {
         poster="https://images.pexels.com/photos/2664443/pexels-photo-2664443.jpeg?auto=compress&cs=tinysrgb&w=1920"
         className="absolute inset-0 w-full h-full object-cover"
       >
+        {/* Mixkit: "Cooking asian food" — wok stir fry, free license */}
         <source
-          src="https://videos.pexels.com/video-files/5336205/5336205-uhd_2560_1440_25fps.mp4"
+          src="https://assets.mixkit.co/videos/9286/9286-720.mp4"
           type="video/mp4"
         />
       </video>

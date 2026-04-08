@@ -45,7 +45,7 @@ export default function Navbar() {
         {/* Wordmark */}
         <a
           href="#accueil"
-          className="font-display uppercase tracking-[0.2em] text-xl text-text no-underline"
+          className="font-display uppercase tracking-[0.15em] text-2xl text-accent no-underline"
         >
           LOTUS
         </a>
@@ -56,7 +56,7 @@ export default function Navbar() {
             <a
               key={link.key}
               href={link.href}
-              className="text-sm uppercase tracking-wider text-text-muted hover:text-accent transition-colors"
+              className="text-sm uppercase tracking-wider text-text hover:text-accent transition-colors font-medium"
             >
               {t(link.key)}
             </a>

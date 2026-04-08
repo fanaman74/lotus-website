@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lotus-dev",
+      "runtimeExecutable": "/Users/fredanaman/.local/share/fnm/node-versions/v24.14.1/installation/bin/npx",
+      "runtimeArgs": ["vite", "--host"],
+      "port": 5173
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useOrder } from '@/components/OrderProvider';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import TakeawayPanel from '@/components/TakeawayPanel';
 import Link from 'next/link';
 
 type Locale = 'fr' | 'nl' | 'en';
@@ -102,7 +104,13 @@ const photos: Photo[] = [
   },
 ];
 
-function PriceTag({ photo, locale }: { photo: Photo; locale: Locale }) {
+const BagIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 11H4L5 9z" />
+  </svg>
+);
+
+function PriceTag({ photo, locale, onAdd }: { photo: Photo; locale: Locale; onAdd: () => void }) {
   if (!photo.priceRestaurant) return null;
   const note = photo.priceNote?.[locale];
   return (
@@ -112,10 +120,13 @@ function PriceTag({ photo, locale }: { photo: Photo; locale: Locale }) {
         {photo.priceRestaurant.toFixed(2)}€
       </span>
       {photo.priceTakeaway != null && (
-        <span className="inline-flex items-center gap-1.5 bg-bg-alt/90 border border-border text-text text-xs px-2 py-0.5 rounded-sm tracking-wide">
-          <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-accent text-bg font-bold text-[10px] leading-none shrink-0">+</span>
+        <button
+          onClick={onAdd}
+          className="inline-flex items-center gap-1.5 bg-bg-alt/90 border border-border text-text text-xs px-2 py-0.5 rounded-sm tracking-wide hover:border-accent hover:text-accent transition-colors"
+        >
+          <BagIcon className="w-3 h-3 shrink-0" />
           {note && <span className="opacity-70">{note} </span>}{photo.priceTakeaway.toFixed(2)}€
-        </span>
+        </button>
       )}
     </div>
   );
@@ -123,7 +134,18 @@ function PriceTag({ photo, locale }: { photo: Photo; locale: Locale }) {
 
 export default function PhotosPage() {
   const { locale, dict } = useLanguage();
+  const { addItem } = useOrder();
   const [lightbox, setLightbox] = useState<number | null>(null);
+
+  function handleAdd(photo: Photo) {
+    if (!photo.priceTakeaway || !photo.menuItem) return;
+    addItem({
+      id: photo.menuItem,
+      name: photo.caption[locale as Locale],
+      desc: '',
+      price: photo.priceTakeaway,
+    });
+  }
 
   useEffect(() => {
     if (lightbox === null) return;
@@ -183,7 +205,7 @@ export default function PhotosPage() {
                   <p className="text-sm font-medium text-text leading-snug">
                     {photo.caption[locale as Locale]}
                   </p>
-                  <PriceTag photo={photo} locale={locale as Locale} />
+                  <PriceTag photo={photo} locale={locale as Locale} onAdd={() => handleAdd(photo)} />
                 </div>
               </div>
             ))}
@@ -198,6 +220,7 @@ export default function PhotosPage() {
       </main>
 
       <Footer dict={{ nav: dict.nav, findUs: dict.findUs, footer: dict.footer }} />
+      <TakeawayPanel />
 
       {/* Lightbox */}
       {lightbox !== null && (
@@ -230,10 +253,13 @@ export default function PhotosPage() {
                     🍽 {photos[lightbox].priceRestaurant?.toFixed(2)}€
                   </span>
                   {photos[lightbox].priceTakeaway != null && (
-                    <span className="inline-flex items-center gap-1.5 text-white/60 text-sm">
-                      <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-accent text-bg font-bold text-[10px] leading-none shrink-0">+</span>
+                    <button
+                      onClick={() => handleAdd(photos[lightbox])}
+                      className="inline-flex items-center gap-1.5 text-white/60 text-sm hover:text-accent transition-colors"
+                    >
+                      <BagIcon className="w-4 h-4 shrink-0" />
                       {photos[lightbox].priceTakeaway?.toFixed(2)}€
-                    </span>
+                    </button>
                   )}
                 </div>
               )}

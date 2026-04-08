@@ -135,7 +135,7 @@ export default function Menu({ sections, dict }: MenuProps) {
                   {item.priceTakeaway && (
                     <button
                       onClick={() => handleAdd(item)}
-                      className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center text-sm hover:bg-accent hover:text-bg transition-colors opacity-0 group-hover:opacity-100"
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-sm text-text-muted hover:bg-accent hover:text-bg transition-colors"
                       aria-label={`Add ${item.name}`}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>

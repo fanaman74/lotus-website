@@ -9,7 +9,7 @@ export default function TakeawayPanel() {
 
   function buildMailtoBody() {
     const lines = items.map(
-      (item) => `${t(item.nameKey)} x${item.quantity} — ${(item.price * item.quantity).toFixed(2)}€`
+      (item) => `${item.name} x${item.quantity} — ${(item.price * item.quantity).toFixed(2)}€`
     );
     lines.push('', `Total: ${total.toFixed(2)}€`);
     return encodeURIComponent(lines.join('\n'));
@@ -75,7 +75,7 @@ export default function TakeawayPanel() {
               {items.map((item) => (
                 <div key={item.id} className="flex items-center justify-between gap-4 pb-4 border-b border-border">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-display text-base truncate">{t(item.nameKey)}</h3>
+                    <h3 className="font-display text-base truncate">{item.name}</h3>
                     <p className="text-text-muted text-sm">{(item.price * item.quantity).toFixed(2)}€</p>
                   </div>
 

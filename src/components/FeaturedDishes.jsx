@@ -1,11 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { menuItems } from '../data/menuData';
+import { featuredDishes } from '../data/menuData';
 
 export default function FeaturedDishes() {
   const { t } = useTranslation();
   const { ref, className } = useScrollReveal();
-  const featured = menuItems.filter((item) => item.featured);
 
   return (
     <section id="featured" className="py-24 px-6 bg-bg-alt">
@@ -15,7 +14,7 @@ export default function FeaturedDishes() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {featured.map((item) => (
+          {featuredDishes.map((item) => (
             <div
               key={item.id}
               className="relative rounded-lg overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform duration-300"
@@ -23,7 +22,7 @@ export default function FeaturedDishes() {
               <div className="aspect-[4/3] overflow-hidden">
                 <img
                   src={item.image}
-                  alt={t(item.nameKey)}
+                  alt={item.name}
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -34,9 +33,9 @@ export default function FeaturedDishes() {
 
               {/* Text overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-5">
-                <h3 className="font-display text-xl italic mb-1">{t(item.nameKey)}</h3>
-                <p className="text-text-muted text-sm mb-2">{t(item.descKey)}</p>
-                <span className="text-accent font-display text-lg">{item.price}€</span>
+                <h3 className="font-display text-xl italic mb-1">{item.name}</h3>
+                <p className="text-text-muted text-sm mb-2">{item.desc}</p>
+                <span className="text-accent font-display text-lg">{item.price.toFixed(2)}&euro;</span>
               </div>
             </div>
           ))}

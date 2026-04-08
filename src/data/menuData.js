@@ -201,5 +201,5 @@ export const orderableItems = menuSections.flatMap(section =>
 export const featuredDishes = [
   { id: 'th03', name: 'Tom Yam Khung', desc: 'Scampis a la citronnelle', price: 6.50, image: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=600' },
   { id: 'vn05', name: 'Nems Vietnamiens', desc: 'Rouleaux chauds aux langoustines', price: 7.00, image: 'https://images.pexels.com/photos/2664216/pexels-photo-2664216.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { id: 'vn40', name: 'Pho Bo', desc: 'Grande soupe tonkinoise au boeuf', price: 13.00, image: 'https://images.pexels.com/photos/1907228/pexels-photo-1907228.jpeg?auto=compress&cs=tinysrgb&w=600' },
+  { id: 'vn40', name: 'Pho Bo', desc: 'Grande soupe tonkinoise au boeuf', price: 13.00, image: 'https://images.pexels.com/photos/2133989/pexels-photo-2133989.jpeg?auto=compress&cs=tinysrgb&w=600' },
 ];

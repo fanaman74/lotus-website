@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 
 type ReservationDict = {
   title: string;
@@ -14,6 +14,13 @@ type ReservationDict = {
   phone: string;
   specialRequests: string;
   confirm: string;
+  otpSentTo: string;
+  otpLabel: string;
+  verify: string;
+  verifying: string;
+  otpError: string;
+  resendCode: string;
+  back: string;
   confirmedTitle: string;
   confirmedGuests: string;
   confirmedEmail: string;
@@ -65,6 +72,13 @@ export default function Reservation({ dict, locale }: ReservationProps) {
   const [specialRequests, setSpecialRequests] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // OTP state
+  const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
+  const [otpError, setOtpError] = useState('');
+  const [verifying, setVerifying] = useState(false);
+  const [resending, setResending] = useState(false);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   const monthNames = monthNamesByLocale[locale] || monthNamesByLocale.fr;
   const dayNames = dayNamesByLocale[locale] || dayNamesByLocale.fr;
 
@@ -90,8 +104,7 @@ export default function Reservation({ dict, locale }: ReservationProps) {
   function selectDay(day: number) {
     const d = new Date(calYear, calMonth, day);
     if (d < today) return;
-    // Wednesday (day 3) is closed
-    if (d.getDay() === 1) return;
+    if (d.getDay() === 3) return; // Wednesday closed
     setSelectedDate(d);
   }
 
@@ -103,9 +116,63 @@ export default function Reservation({ dict, locale }: ReservationProps) {
     return firstName.trim() && lastName.trim() && email.trim();
   }
 
+  async function sendOtp() {
+    const res = await fetch('/api/otp/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.trim(), name: `${firstName.trim()} ${lastName.trim()}` }),
+    });
+    return res.ok;
+  }
+
   async function handleConfirm() {
-    if (!canConfirm() || !selectedDate) return;
+    if (!canConfirm() || submitting) return;
     setSubmitting(true);
+    await sendOtp();
+    setSubmitting(false);
+    setOtpDigits(['', '', '', '', '', '']);
+    setOtpError('');
+    setStep(3);
+    setTimeout(() => otpRefs.current[0]?.focus(), 100);
+  }
+
+  function handleOtpInput(index: number, value: string) {
+    if (value.length > 1) {
+      // Handle paste
+      const digits = value.replace(/\D/g, '').slice(0, 6).split('');
+      const next = [...otpDigits];
+      digits.forEach((d, i) => { if (index + i < 6) next[index + i] = d; });
+      setOtpDigits(next);
+      const focusIdx = Math.min(index + digits.length, 5);
+      otpRefs.current[focusIdx]?.focus();
+      if (digits.length === 6 - index || index + digits.length >= 6) {
+        const full = next.join('');
+        if (full.length === 6) submitOtp(full);
+      }
+      return;
+    }
+    if (!/^\d?$/.test(value)) return;
+    const next = [...otpDigits];
+    next[index] = value;
+    setOtpDigits(next);
+    if (value && index < 5) otpRefs.current[index + 1]?.focus();
+    if (value && index === 5) {
+      const full = next.join('');
+      if (full.length === 6) submitOtp(full);
+    }
+  }
+
+  function handleOtpKeyDown(index: number, e: React.KeyboardEvent) {
+    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  }
+
+  async function submitOtp(code: string) {
+    if (verifying || !selectedDate) return;
+    setVerifying(true);
+    setOtpError('');
+
     const payload = {
       guests,
       date: selectedDate.toISOString().split('T')[0],
@@ -115,6 +182,8 @@ export default function Reservation({ dict, locale }: ReservationProps) {
       email: email.trim(),
       phone: phone.trim(),
       specialRequests: specialRequests.trim(),
+      locale,
+      code,
     };
 
     try {
@@ -123,17 +192,27 @@ export default function Reservation({ dict, locale }: ReservationProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      if (!res.ok) {
+        setOtpError(dict.otpError);
+        setOtpDigits(['', '', '', '', '', '']);
+        setTimeout(() => otpRefs.current[0]?.focus(), 50);
+      } else {
+        setStep(4);
+      }
     } catch {
-      // Fallback to mailto
-      const subject = encodeURIComponent(`Reservation Lotus - ${payload.date}`);
-      const body = encodeURIComponent(
-        `Nombre de convives: ${payload.guests}\nDate: ${payload.date}\nHeure: ${payload.time}\nNom: ${payload.firstName} ${payload.lastName}\nEmail: ${payload.email}\nTel: ${payload.phone}\nDemandes: ${payload.specialRequests}`
-      );
-      window.open(`mailto:info@lotus-laeken.be?subject=${subject}&body=${body}`, '_blank');
+      setOtpError(dict.otpError);
     }
-    setSubmitting(false);
-    setStep(3);
+    setVerifying(false);
+  }
+
+  async function handleResend() {
+    setResending(true);
+    await sendOtp();
+    setOtpDigits(['', '', '', '', '', '']);
+    setOtpError('');
+    setResending(false);
+    setTimeout(() => otpRefs.current[0]?.focus(), 50);
   }
 
   const formattedDate = selectedDate
@@ -150,7 +229,6 @@ export default function Reservation({ dict, locale }: ReservationProps) {
         {/* Step 1: Date, time, guests */}
         {step === 1 && (
           <div className="space-y-8">
-            {/* Guest counter */}
             <div>
               <label className="block text-sm uppercase tracking-wider text-text-muted mb-3">{dict.guests}</label>
               <div className="flex items-center gap-4">
@@ -160,11 +238,9 @@ export default function Reservation({ dict, locale }: ReservationProps) {
               </div>
             </div>
 
-            {/* Inline calendar */}
             <div>
               <label className="block text-sm uppercase tracking-wider text-text-muted mb-3">{dict.date}</label>
               <div className="border border-border rounded-lg p-4">
-                {/* Month navigation */}
                 <div className="flex items-center justify-between mb-4">
                   <button onClick={prevMonth} className="text-text-muted hover:text-text transition-colors p-1">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -174,15 +250,11 @@ export default function Reservation({ dict, locale }: ReservationProps) {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                   </button>
                 </div>
-
-                {/* Day headers */}
                 <div className="grid grid-cols-7 gap-1 mb-2">
                   {dayNames.map(d => (
                     <div key={d} className="text-center text-xs text-text-muted py-1">{d}</div>
                   ))}
                 </div>
-
-                {/* Day cells */}
                 <div className="grid grid-cols-7 gap-1">
                   {Array.from({ length: firstDay }).map((_, i) => (
                     <div key={`empty-${i}`} />
@@ -194,7 +266,6 @@ export default function Reservation({ dict, locale }: ReservationProps) {
                     const isWednesday = date.getDay() === 3;
                     const isDisabled = isPast || isWednesday;
                     const isSelected = selectedDate && selectedDate.getTime() === date.getTime();
-
                     return (
                       <button
                         key={day}
@@ -216,7 +287,6 @@ export default function Reservation({ dict, locale }: ReservationProps) {
               </div>
             </div>
 
-            {/* Time select */}
             <div>
               <label className="block text-sm uppercase tracking-wider text-text-muted mb-3">{dict.time}</label>
               <div className="flex flex-wrap gap-2">
@@ -284,14 +354,66 @@ export default function Reservation({ dict, locale }: ReservationProps) {
                 disabled={!canConfirm() || submitting}
                 className="flex-1 py-3 text-sm uppercase tracking-wider border border-accent text-accent hover:bg-accent hover:text-bg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                {dict.confirm}
+                {submitting ? '…' : dict.confirm}
               </button>
             </div>
           </div>
         )}
 
-        {/* Step 3: Confirmation */}
+        {/* Step 3: OTP verification */}
         {step === 3 && (
+          <div className="space-y-6">
+            <p className="text-text-muted text-sm text-center">
+              {dict.otpSentTo} <span className="text-accent">{email}</span>
+            </p>
+
+            <div>
+              <label className="block text-xs uppercase tracking-wider text-text-muted mb-4 text-center">{dict.otpLabel}</label>
+              <div className="flex gap-2 justify-center">
+                {otpDigits.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={el => { otpRefs.current[i] = el; }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    value={digit}
+                    onChange={e => handleOtpInput(i, e.target.value)}
+                    onKeyDown={e => handleOtpKeyDown(i, e)}
+                    className="w-11 h-14 text-center text-xl font-mono border border-border rounded focus:border-accent outline-none bg-transparent transition-colors"
+                  />
+                ))}
+              </div>
+              {otpError && (
+                <p className="text-red-400 text-sm text-center mt-3">{otpError}</p>
+              )}
+            </div>
+
+            <button
+              onClick={() => submitOtp(otpDigits.join(''))}
+              disabled={otpDigits.join('').length < 6 || verifying}
+              className="w-full py-3 text-sm uppercase tracking-wider border border-accent text-accent hover:bg-accent hover:text-bg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              {verifying ? dict.verifying : dict.verify}
+            </button>
+
+            <div className="flex items-center justify-between pt-2">
+              <button onClick={() => setStep(2)} className="text-sm text-text-muted hover:text-text transition-colors">
+                &larr; {dict.back}
+              </button>
+              <button
+                onClick={handleResend}
+                disabled={resending}
+                className="text-sm text-accent hover:underline disabled:opacity-50"
+              >
+                {resending ? '…' : dict.resendCode}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 4: Confirmation */}
+        {step === 4 && (
           <div className="text-center space-y-4">
             <div className="w-16 h-16 rounded-full bg-accent/20 text-accent mx-auto flex items-center justify-center mb-4">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>

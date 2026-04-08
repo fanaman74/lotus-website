@@ -20,7 +20,7 @@ export const menuSections = [
           { id: 'th4a', num: '4a', name: 'Croquettes Thai', desc: 'Croquettes croustillantes aux épices thaï', priceRestaurant: 6.50, priceTraiteur: 6.00 },
           { id: 'th05', num: '05', name: 'Pai kai tod', desc: 'Ailes de poulet farcies', priceRestaurant: 7.50, priceTraiteur: null },
           { id: 'th06', num: '06', name: 'Scampis a la Coriandre', desc: 'Scampis sautés à la coriandre fraîche', priceRestaurant: 10.00, priceTraiteur: 9.50 },
-          { id: 'th07', num: '07', name: 'Raviolis de scampis', desc: 'Et viande', priceRestaurant: 7.50, priceTraiteur: 7.00 },
+          { id: 'th07', num: '07', name: 'Raviolis de scampis', desc: 'Raviolis vapeur aux scampis et viande', priceRestaurant: 7.50, priceTraiteur: 7.00 },
           { id: 'th08', num: '08', name: 'Salade de poulet', desc: 'Aux herbes fraiches', priceRestaurant: 8.00, priceTraiteur: 7.50 },
           { id: 'th09', num: '09', name: 'Salade de boeuf', desc: 'Legerement grille au citron', priceRestaurant: 10.00, priceTraiteur: 9.50 },
           { id: 'th10', num: '10', name: 'Salade de scampis', desc: 'Scampis frais, salade croquante, vinaigrette thaï', priceRestaurant: 10.00, priceTraiteur: null },

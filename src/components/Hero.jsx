@@ -11,11 +11,11 @@ export default function Hero() {
         muted
         loop
         playsInline
-        poster="https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&w=1920"
+        poster="https://images.pexels.com/photos/2664443/pexels-photo-2664443.jpeg?auto=compress&cs=tinysrgb&w=1920"
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source
-          src="https://videos.pexels.com/video-files/2620043/2620043-uhd_2560_1440_30fps.mp4"
+          src="https://videos.pexels.com/video-files/5336205/5336205-uhd_2560_1440_25fps.mp4"
           type="video/mp4"
         />
       </video>

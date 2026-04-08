@@ -10,16 +10,14 @@ export default function FindUs() {
 
   return (
     <section id="informations" className="py-24 px-6">
-      <div
-        ref={ref}
-        className={`max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 ${className}`}
-      >
+      <div ref={ref} className={`max-w-[1200px] mx-auto ${className}`}>
+        <h2 className="font-display italic text-3xl md:text-4xl mb-12 text-center">
+          {t('findUs.title')}
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left: Info */}
         <div className="text-center lg:text-left">
-          <h2 className="font-display italic text-3xl md:text-4xl mb-8">
-            {t('findUs.title')}
-          </h2>
-
           <p className="text-text-muted mb-2">{t('findUs.address')}</p>
           <a
             href={`tel:${t('findUs.phone').replace(/\s/g, '')}`}
@@ -60,6 +58,7 @@ export default function FindUs() {
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
           />
+        </div>
         </div>
       </div>
     </section>

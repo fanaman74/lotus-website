@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "events": "Evenementen",
+    "info": "Informatie",
+    "contact": "Contact"
+  },
+  "hero": {
+    "superscript": "Restaurant · Traiteur · Laken",
+    "title": "De Vietnamese & Thaise keuken van Laken.",
+    "subtitle": "Een warm buurtrestaurant — waar traditie en het simpele plezier van een goed bereid gerecht samenkomen.",
+    "cta": "Bekijk het menu",
+    "scroll": "Scroll"
+  },
+  "about": {
+    "title": "Onze Tafel",
+    "body": "Gelegen in het hart van de wijk Laken in Brussel, verwelkomt Lotus u in een warme en gezellige sfeer. Als populaire buurtcantine voor Vietnamese en Thaise keuken worden onze gerechten doorgaans gedeeld met vrienden, familie of collega's. Onze missie is eenvoudig: heerlijke en betaalbare gerechten serveren die u week na week opnieuw wilt bestellen."
+  },
+  "featured": {
+    "title": "Onze Specialiteiten"
+  },
+  "menu": {
+    "title": "Onze Kaart",
+    "addButton": "+ Toevoegen",
+    "categories": {
+      "starters": "Voorgerechten",
+      "mains": "Hoofdgerechten",
+      "desserts": "Desserts",
+      "drinks": "Dranken"
+    },
+    "items": {
+      "spring_rolls": { "name": "Loempia's", "desc": "Verse groenten, vermicelli, pindasaus" },
+      "nem": { "name": "Vietnamese Nem (4 st.)", "desc": "Varkensvlees, garnalen, zwarte paddenstoelen, nuoc-mâmsaus" },
+      "papaya_salad": { "name": "Groene Papajasalade", "desc": "Geraspte papaja, gedroogde garnalen, pinda's" },
+      "tom_yum": { "name": "Tom Yum Soep", "desc": "Pittige garnalensoep met citroengras en galanga" },
+      "pho_bo": { "name": "Pho Bo", "desc": "Huisgemaakte runderbouillon, rijstnoedels, verse kruiden" },
+      "pad_thai": { "name": "Pad Thai", "desc": "Gebakken noedels met garnalen, pinda's, limoen" },
+      "bo_bun": { "name": "Bo Bun", "desc": "Rijstvermicelli, gegrild rundvlees, loempia's, rauwkost" },
+      "green_curry": { "name": "Thaise Groene Curry", "desc": "Kip, kokosmelk, aubergine, Thaise basilicum" },
+      "canard_laque": { "name": "Gelakte Eend", "desc": "Geroosterde eend, hoisinsaus, mandarijnpannenkoekjes" },
+      "riz_saute": { "name": "Gebakken Rijst met Groenten", "desc": "Geurrijst, seizoensgroenten, sojasaus" },
+      "creme_coco": { "name": "Kokoscrème", "desc": "Tapiocaparels, kokosmelk, verse mango" },
+      "beignets_banane": { "name": "Bananenbeignets", "desc": "Gefrituurde banaan, honing, sesam" },
+      "the_jasmin": { "name": "Jasmijnthee", "desc": "Groene thee met jasmijnbloemen" },
+      "biere_saigon": { "name": "Saigon Bier", "desc": "Vietnamees blond bier 33cl" },
+      "jus_litchi": { "name": "Litchisap", "desc": "Versgeperst litchisap" }
+    }
+  },
+  "events": {
+    "title": "Evenementen",
+    "body": "Reserveer Lotus voor uw volgende privé-evenement, verjaardag of bedrijfsdiner. Wij bieden ook een cateringservice aan huis voor al uw speciale gelegenheden.",
+    "cta": "Neem contact op"
+  },
+  "findUs": {
+    "title": "Ons Vinden",
+    "address": "17 avenue de Busleyden, 1020 Laken, België",
+    "phone": "+32 2 366 47 40",
+    "hoursTitle": "Openingsuren",
+    "hours": {
+      "monday": { "day": "Maandag", "time": "Gesloten" },
+      "tuesday": { "day": "Dinsdag", "time": "11u30 – 14u30" },
+      "wednesday": { "day": "Woensdag", "time": "11u30 – 14u30 / 17u30 – 21u30" },
+      "thursday": { "day": "Donderdag", "time": "11u30 – 14u30 / 17u30 – 21u30" },
+      "friday": { "day": "Vrijdag", "time": "11u30 – 14u30 / 17u30 – 21u30" },
+      "saturday": { "day": "Zaterdag", "time": "11u30 – 14u30 / 17u30 – 21u30" },
+      "sunday": { "day": "Zondag", "time": "11u30 – 14u30" }
+    }
+  },
+  "reservation": {
+    "title": "Reserveer een Tafel",
+    "guests": "Aantal gasten",
+    "date": "Datum",
+    "time": "Tijdstip",
+    "continue": "Doorgaan",
+    "contactTitle": "Uw Gegevens",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "specialRequests": "Bijzondere wensen",
+    "confirm": "Reservering Bevestigen",
+    "confirmedTitle": "Reservering Bevestigd",
+    "confirmedGuests": "{{count}} gasten",
+    "confirmedEmail": "Een bevestigingsmail is verstuurd naar",
+    "backHome": "Terug naar home"
+  },
+  "order": {
+    "title": "Uw Bestelling",
+    "close": "Sluiten",
+    "total": "Totaal",
+    "emailOrder": "Bestellen per E-mail",
+    "reserveOrder": "Reserveren en Bestellen",
+    "empty": "Uw winkelmandje is leeg"
+  },
+  "footer": {
+    "copyright": "© 2026 Traiteur-Restaurant Lotus · Laken, Brussel"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "menu": "Menu",
+    "events": "Événements",
+    "info": "Informations",
+    "contact": "Contact"
+  },
+  "hero": {
+    "superscript": "Restaurant · Traiteur · Laeken",
+    "title": "La cuisine Vietnamienne & Thaïlandaise de Laeken.",
+    "subtitle": "Une table de quartier chaleureuse — où la tradition rencontre le plaisir simple d'un plat bien fait.",
+    "cta": "Voir le menu",
+    "scroll": "Scroll"
+  },
+  "about": {
+    "title": "Notre Table",
+    "body": "Situé au cœur du quartier de Laeken à Bruxelles, Lotus vous accueille dans une ambiance chaleureuse et conviviale. Cantine populaire de référence pour la cuisine vietnamienne et thaïlandaise, nos plats sont généralement partagés entre amis, famille ou collègues. Notre mission est simple : servir des plats délicieux et abordables que vous voudrez commander semaine après semaine."
+  },
+  "featured": {
+    "title": "Nos Spécialités"
+  },
+  "menu": {
+    "title": "Notre Carte",
+    "addButton": "+ Ajouter",
+    "categories": {
+      "starters": "Entrées",
+      "mains": "Plats",
+      "desserts": "Desserts",
+      "drinks": "Boissons"
+    },
+    "items": {
+      "spring_rolls": { "name": "Rouleaux de Printemps", "desc": "Légumes frais, vermicelle, sauce cacahuète" },
+      "nem": { "name": "Nem Vietnamien (4 pcs)", "desc": "Porc, crevettes, champignons noirs, sauce nuoc-mâm" },
+      "papaya_salad": { "name": "Salade de Papaye Verte", "desc": "Papaye râpée, crevettes séchées, cacahuètes" },
+      "tom_yum": { "name": "Soupe Tom Yum", "desc": "Bouillon épicé aux crevettes, citronnelle, galanga" },
+      "pho_bo": { "name": "Pho Bo", "desc": "Bouillon de bœuf maison, nouilles de riz, herbes fraîches" },
+      "pad_thai": { "name": "Pad Thaï", "desc": "Nouilles sautées aux crevettes, cacahuètes, citron vert" },
+      "bo_bun": { "name": "Bo Bun", "desc": "Vermicelle de riz, bœuf grillé, nems, crudités" },
+      "green_curry": { "name": "Curry Vert Thaï", "desc": "Poulet, lait de coco, aubergines, basilic thaï" },
+      "canard_laque": { "name": "Canard Laqué", "desc": "Canard rôti, sauce hoisin, crêpes mandarine" },
+      "riz_saute": { "name": "Riz Sauté aux Légumes", "desc": "Riz parfumé, légumes de saison, sauce soja" },
+      "creme_coco": { "name": "Crème de Coco", "desc": "Perles de tapioca, lait de coco, mangue fraîche" },
+      "beignets_banane": { "name": "Beignets de Banane", "desc": "Banane frite, miel, sésame" },
+      "the_jasmin": { "name": "Thé au Jasmin", "desc": "Thé vert infusé aux fleurs de jasmin" },
+      "biere_saigon": { "name": "Bière Saïgon", "desc": "Bière blonde vietnamienne 33cl" },
+      "jus_litchi": { "name": "Jus de Litchi", "desc": "Jus de litchi frais pressé" }
+    }
+  },
+  "events": {
+    "title": "Événements",
+    "body": "Réservez Lotus pour votre prochain événement privé, anniversaire, ou repas d'entreprise. Nous proposons également un service traiteur à domicile pour toutes vos occasions spéciales.",
+    "cta": "Nous contacter"
+  },
+  "findUs": {
+    "title": "Nous Trouver",
+    "address": "17 avenue de Busleyden, 1020 Laeken, Belgique",
+    "phone": "+32 2 366 47 40",
+    "hoursTitle": "Heures d'ouverture",
+    "hours": {
+      "monday": { "day": "Lundi", "time": "Fermé" },
+      "tuesday": { "day": "Mardi", "time": "11h30 – 14h30" },
+      "wednesday": { "day": "Mercredi", "time": "11h30 – 14h30 / 17h30 – 21h30" },
+      "thursday": { "day": "Jeudi", "time": "11h30 – 14h30 / 17h30 – 21h30" },
+      "friday": { "day": "Vendredi", "time": "11h30 – 14h30 / 17h30 – 21h30" },
+      "saturday": { "day": "Samedi", "time": "11h30 – 14h30 / 17h30 – 21h30" },
+      "sunday": { "day": "Dimanche", "time": "11h30 – 14h30" }
+    }
+  },
+  "reservation": {
+    "title": "Réserver une Table",
+    "guests": "Nombre de convives",
+    "date": "Date",
+    "time": "Heure",
+    "continue": "Continuer",
+    "contactTitle": "Vos Coordonnées",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "specialRequests": "Demandes spéciales",
+    "confirm": "Confirmer la Réservation",
+    "confirmedTitle": "Réservation Confirmée",
+    "confirmedGuests": "{{count}} convives",
+    "confirmedEmail": "Un email de confirmation a été envoyé à",
+    "backHome": "Retour à l'accueil"
+  },
+  "order": {
+    "title": "Votre Commande",
+    "close": "Fermer",
+    "total": "Total",
+    "emailOrder": "Commander par Email",
+    "reserveOrder": "Réserver et Commander",
+    "empty": "Votre panier est vide"
+  },
+  "footer": {
+    "copyright": "© 2026 Traiteur-Restaurant Lotus · Laeken, Bruxelles"
+  }
+}

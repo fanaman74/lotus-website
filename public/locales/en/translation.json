@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "events": "Events",
+    "info": "Info",
+    "contact": "Contact"
+  },
+  "hero": {
+    "superscript": "Restaurant · Caterer · Laeken",
+    "title": "Vietnamese & Thai cuisine in Laeken.",
+    "subtitle": "A warm neighbourhood table — where tradition meets the simple pleasure of a well-crafted dish.",
+    "cta": "View the menu",
+    "scroll": "Scroll"
+  },
+  "about": {
+    "title": "Our Table",
+    "body": "Located in the heart of the Laeken neighbourhood in Brussels, Lotus welcomes you in a warm and friendly setting. A beloved local canteen for Vietnamese and Thai cuisine, our dishes are meant to be shared among friends, family, and colleagues. Our mission is simple: serve delicious, affordable food you'll want to order week after week."
+  },
+  "featured": {
+    "title": "Our Specialities"
+  },
+  "menu": {
+    "title": "Our Menu",
+    "addButton": "+ Add",
+    "categories": {
+      "starters": "Starters",
+      "mains": "Mains",
+      "desserts": "Desserts",
+      "drinks": "Drinks"
+    },
+    "items": {
+      "spring_rolls": { "name": "Spring Rolls", "desc": "Fresh vegetables, vermicelli, peanut sauce" },
+      "nem": { "name": "Vietnamese Nem (4 pcs)", "desc": "Pork, shrimp, black mushrooms, nuoc-mam sauce" },
+      "papaya_salad": { "name": "Green Papaya Salad", "desc": "Shredded papaya, dried shrimp, peanuts" },
+      "tom_yum": { "name": "Tom Yum Soup", "desc": "Spicy shrimp broth with lemongrass and galangal" },
+      "pho_bo": { "name": "Pho Bo", "desc": "Homemade beef broth, rice noodles, fresh herbs" },
+      "pad_thai": { "name": "Pad Thai", "desc": "Stir-fried noodles with shrimp, peanuts, lime" },
+      "bo_bun": { "name": "Bo Bun", "desc": "Rice vermicelli, grilled beef, spring rolls, raw vegetables" },
+      "green_curry": { "name": "Thai Green Curry", "desc": "Chicken, coconut milk, aubergine, Thai basil" },
+      "canard_laque": { "name": "Lacquered Duck", "desc": "Roasted duck, hoisin sauce, mandarin pancakes" },
+      "riz_saute": { "name": "Vegetable Fried Rice", "desc": "Fragrant rice, seasonal vegetables, soy sauce" },
+      "creme_coco": { "name": "Coconut Cream", "desc": "Tapioca pearls, coconut milk, fresh mango" },
+      "beignets_banane": { "name": "Banana Fritters", "desc": "Fried banana, honey, sesame" },
+      "the_jasmin": { "name": "Jasmine Tea", "desc": "Green tea infused with jasmine blossoms" },
+      "biere_saigon": { "name": "Saigon Beer", "desc": "Vietnamese lager 33cl" },
+      "jus_litchi": { "name": "Lychee Juice", "desc": "Freshly pressed lychee juice" }
+    }
+  },
+  "events": {
+    "title": "Events",
+    "body": "Book Lotus for your next private event, birthday, or corporate dinner. We also offer a home catering service for all your special occasions.",
+    "cta": "Get in touch"
+  },
+  "findUs": {
+    "title": "Find Us",
+    "address": "17 avenue de Busleyden, 1020 Laeken, Belgium",
+    "phone": "+32 2 366 47 40",
+    "hoursTitle": "Opening Hours",
+    "hours": {
+      "monday": { "day": "Monday", "time": "Closed" },
+      "tuesday": { "day": "Tuesday", "time": "11:30 AM – 2:30 PM" },
+      "wednesday": { "day": "Wednesday", "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM" },
+      "thursday": { "day": "Thursday", "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM" },
+      "friday": { "day": "Friday", "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM" },
+      "saturday": { "day": "Saturday", "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM" },
+      "sunday": { "day": "Sunday", "time": "11:30 AM – 2:30 PM" }
+    }
+  },
+  "reservation": {
+    "title": "Book a Table",
+    "guests": "Number of guests",
+    "date": "Date",
+    "time": "Time",
+    "continue": "Continue",
+    "contactTitle": "Your Details",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "specialRequests": "Special requests",
+    "confirm": "Confirm Reservation",
+    "confirmedTitle": "Reservation Confirmed",
+    "confirmedGuests": "{{count}} guests",
+    "confirmedEmail": "A confirmation email has been sent to",
+    "backHome": "Back to home"
+  },
+  "order": {
+    "title": "Your Order",
+    "close": "Close",
+    "total": "Total",
+    "emailOrder": "Order by Email",
+    "reserveOrder": "Reserve and Order",
+    "empty": "Your cart is empty"
+  },
+  "footer": {
+    "copyright": "© 2026 Traiteur-Restaurant Lotus · Laeken, Brussels"
+  }
+}

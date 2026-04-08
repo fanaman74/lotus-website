@@ -25,8 +25,8 @@ export default function Menu() {
   function handleAddItem(item) {
     addItem({
       id: item.id,
-      name: item.name,
-      desc: item.desc,
+      name: t(item.nameKey),
+      desc: t(item.descKey),
       price: item.priceTraiteur,
     });
   }
@@ -93,10 +93,10 @@ export default function Menu() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2">
                     <span className="text-text-muted text-xs shrink-0 w-6">{item.num}</span>
-                    <h3 className="font-display text-lg">{item.name}</h3>
+                    <h3 className="font-display text-lg">{t(item.nameKey)}</h3>
                   </div>
-                  {item.desc && (
-                    <p className="text-text-muted text-sm mt-0.5 ml-8">{item.desc}</p>
+                  {t(item.descKey) && (
+                    <p className="text-text-muted text-sm mt-0.5 ml-8">{t(item.descKey)}</p>
                   )}
                 </div>
 
@@ -113,7 +113,7 @@ export default function Menu() {
                       <button
                         onClick={() => handleAddItem(item)}
                         className="w-8 h-8 flex items-center justify-center rounded-full border border-accent-alt text-accent-alt hover:bg-accent-alt hover:text-bg transition-colors"
-                        aria-label={`Add ${item.name} to cart`}
+                        aria-label={`Add ${t(item.nameKey)} to cart`}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

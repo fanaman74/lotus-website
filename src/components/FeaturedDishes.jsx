@@ -22,7 +22,7 @@ export default function FeaturedDishes() {
               <div className="aspect-[4/3] overflow-hidden">
                 <img
                   src={item.image}
-                  alt={item.name}
+                  alt={t(item.nameKey)}
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -33,8 +33,8 @@ export default function FeaturedDishes() {
 
               {/* Text overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-5">
-                <h3 className="font-display text-xl italic mb-1 drop-shadow-lg">{item.name}</h3>
-                <p className="text-white/80 text-sm mb-2 drop-shadow-md">{item.desc}</p>
+                <h3 className="font-display text-xl italic mb-1 drop-shadow-lg">{t(item.nameKey)}</h3>
+                <p className="text-white/80 text-sm mb-2 drop-shadow-md">{t(item.descKey)}</p>
                 <span className="text-accent font-display text-lg drop-shadow-md">{item.price.toFixed(2)}&euro;</span>
               </div>
             </div>

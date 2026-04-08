@@ -15,7 +15,7 @@ export default function FindUs() {
         className={`max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 ${className}`}
       >
         {/* Left: Info */}
-        <div>
+        <div className="text-center lg:text-left">
           <h2 className="font-display italic text-3xl md:text-4xl mb-8">
             {t('findUs.title')}
           </h2>
@@ -29,7 +29,7 @@ export default function FindUs() {
           </a>
 
           <h3 className="font-display text-xl mt-8 mb-4">{t('findUs.hoursTitle')}</h3>
-          <table className="w-full text-sm">
+          <table className="w-full text-sm mx-auto max-w-md lg:mx-0 lg:max-w-none">
             <tbody>
               {hourKeys.map((key) => {
                 const day = t(`findUs.hours.${key}.day`);

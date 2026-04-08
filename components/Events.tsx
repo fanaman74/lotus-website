@@ -25,7 +25,7 @@ export default function Events({ dict }: { dict: EventsDict }) {
           {dict.body}
         </p>
         <a
-          href="#contact"
+          href="/event-contact"
           className="inline-block border border-accent text-accent px-8 py-3 text-sm uppercase tracking-wider hover:bg-accent hover:text-bg transition-colors"
         >
           {dict.cta}

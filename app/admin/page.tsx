@@ -15,23 +15,83 @@ export default async function AdminDashboard() {
 
   const supabase = createServerClient();
 
-  const { data: reservations } = await supabase
-    .from('lotus_reservations')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(20);
-
-  const { data: orders } = await supabase
-    .from('lotus_orders')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(20);
+  const [{ data: reservations }, { data: orders }, { data: events }] = await Promise.all([
+    supabase.from('lotus_reservations').select('*').order('created_at', { ascending: false }).limit(20),
+    supabase.from('lotus_orders').select('*').order('created_at', { ascending: false }).limit(20),
+    supabase.from('lotus_event_requests').select('*').order('created_at', { ascending: false }).limit(50),
+  ]);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <h1 className="text-2xl font-display text-accent">Dashboard</h1>
 
-      {/* Reservations */}
+      {/* ── Event Requests ── */}
+      <section>
+        <h2 className="text-lg font-semibold text-text mb-4 flex items-center gap-2">
+          Event Requests
+          {(events?.length ?? 0) > 0 && (
+            <span className="text-xs bg-accent/20 text-accent px-2 py-0.5 rounded-full font-normal">
+              {events!.filter((e: any) => e.status === 'pending').length} pending
+            </span>
+          )}
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-left">
+                <th className="pb-2 pr-4">Date received</th>
+                <th className="pb-2 pr-4">Name</th>
+                <th className="pb-2 pr-4">Contact</th>
+                <th className="pb-2 pr-4">Type</th>
+                <th className="pb-2 pr-4">Event date</th>
+                <th className="pb-2 pr-4">Guests</th>
+                <th className="pb-2 pr-4">Message</th>
+                <th className="pb-2 pr-4">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(events || []).map((ev: any) => (
+                <tr key={ev.id} className="border-b border-border/50 align-top">
+                  <td className="py-2 pr-4 whitespace-nowrap text-text-muted">
+                    {new Date(ev.created_at).toLocaleDateString('fr-BE')}
+                  </td>
+                  <td className="py-2 pr-4 whitespace-nowrap font-medium">
+                    {ev.first_name} {ev.last_name}
+                  </td>
+                  <td className="py-2 pr-4">
+                    <div className="text-text-muted">{ev.email}</div>
+                    {ev.phone && <div className="text-text-muted">{ev.phone}</div>}
+                  </td>
+                  <td className="py-2 pr-4 capitalize whitespace-nowrap">{ev.event_type}</td>
+                  <td className="py-2 pr-4 whitespace-nowrap">
+                    {ev.event_date ? new Date(ev.event_date).toLocaleDateString('fr-BE') : '—'}
+                  </td>
+                  <td className="py-2 pr-4">{ev.guests ?? '—'}</td>
+                  <td className="py-2 pr-4 max-w-[200px]">
+                    {ev.message
+                      ? <span className="text-text-muted line-clamp-2 text-xs leading-relaxed">{ev.message}</span>
+                      : <span className="text-border">—</span>
+                    }
+                  </td>
+                  <td className="py-2 pr-4">
+                    <StatusDropdown
+                      id={ev.id}
+                      currentStatus={ev.status || 'pending'}
+                      endpoint="/api/admin/event-requests"
+                      options={['pending', 'contacted', 'confirmed', 'cancelled']}
+                    />
+                  </td>
+                </tr>
+              ))}
+              {(!events || events.length === 0) && (
+                <tr><td colSpan={8} className="py-4 text-text-muted text-center">No event requests yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ── Reservations ── */}
       <section>
         <h2 className="text-lg font-semibold text-text mb-4">Recent Reservations</h2>
         <div className="overflow-x-auto">
@@ -72,7 +132,7 @@ export default async function AdminDashboard() {
         </div>
       </section>
 
-      {/* Orders */}
+      {/* ── Orders ── */}
       <section>
         <h2 className="text-lg font-semibold text-text mb-4">Recent Orders</h2>
         <div className="overflow-x-auto">

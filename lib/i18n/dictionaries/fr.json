@@ -451,31 +451,31 @@
     "hours": {
       "monday": {
         "day": "Lundi",
-        "time": "Fermé"
+        "time": "12h – 14h30  /  18h – 21h30"
       },
       "tuesday": {
         "day": "Mardi",
-        "time": "11h30 – 14h30"
+        "time": "12h – 14h30  /  18h – 21h30"
       },
       "wednesday": {
         "day": "Mercredi",
-        "time": "11h30 – 14h30 / 17h30 – 21h30"
+        "time": "Fermé"
       },
       "thursday": {
         "day": "Jeudi",
-        "time": "11h30 – 14h30 / 17h30 – 21h30"
+        "time": "12h – 14h30  /  18h – 21h30"
       },
       "friday": {
         "day": "Vendredi",
-        "time": "11h30 – 14h30 / 17h30 – 21h30"
+        "time": "12h – 14h30  /  18h – 21h30"
       },
       "saturday": {
         "day": "Samedi",
-        "time": "11h30 – 14h30 / 17h30 – 21h30"
+        "time": "12h – 14h30  /  18h – 21h30"
       },
       "sunday": {
         "day": "Dimanche",
-        "time": "11h30 – 14h30"
+        "time": "12h – 14h30  /  18h – 21h30"
       }
     }
   },
@@ -511,5 +511,31 @@
   "photos": {
     "title": "Notre Galerie",
     "subtitle": "Découvrez nos plats vietnamiens et thaïlandais"
+  },
+  "eventContact": {
+    "title": "Réserver un Événement",
+    "subtitle": "Anniversaires, repas d'entreprise, fêtes de famille",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "eventType": "Type d'événement",
+    "eventTypes": {
+      "birthday": "Anniversaire",
+      "corporate": "Repas d'entreprise",
+      "wedding": "Mariage / Fiançailles",
+      "family": "Repas de famille",
+      "catering": "Traiteur à domicile",
+      "other": "Autre"
+    },
+    "eventDate": "Date souhaitée",
+    "guests": "Nombre de personnes",
+    "message": "Message / Demandes spéciales",
+    "submit": "Envoyer la demande",
+    "submitting": "Envoi en cours…",
+    "successTitle": "Demande envoyée !",
+    "successBody": "Nous vous contacterons dans les plus brefs délais pour confirmer votre réservation.",
+    "backHome": "Retour à l'accueil",
+    "required": "Champ obligatoire"
   }
 }

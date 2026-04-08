@@ -90,7 +90,7 @@ export default function Reservation({ dict, locale }: ReservationProps) {
   function selectDay(day: number) {
     const d = new Date(calYear, calMonth, day);
     if (d < today) return;
-    // Monday (day 1) is closed
+    // Wednesday (day 3) is closed
     if (d.getDay() === 1) return;
     setSelectedDate(d);
   }
@@ -191,8 +191,8 @@ export default function Reservation({ dict, locale }: ReservationProps) {
                     const day = i + 1;
                     const date = new Date(calYear, calMonth, day);
                     const isPast = date < today;
-                    const isMonday = date.getDay() === 1;
-                    const isDisabled = isPast || isMonday;
+                    const isWednesday = date.getDay() === 3;
+                    const isDisabled = isPast || isWednesday;
                     const isSelected = selectedDate && selectedDate.getTime() === date.getTime();
 
                     return (

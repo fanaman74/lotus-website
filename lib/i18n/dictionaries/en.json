@@ -451,31 +451,31 @@
     "hours": {
       "monday": {
         "day": "Monday",
-        "time": "Closed"
+        "time": "12pm – 2:30pm  /  6pm – 9:30pm"
       },
       "tuesday": {
         "day": "Tuesday",
-        "time": "11:30 AM – 2:30 PM"
+        "time": "12pm – 2:30pm  /  6pm – 9:30pm"
       },
       "wednesday": {
         "day": "Wednesday",
-        "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM"
+        "time": "Closed"
       },
       "thursday": {
         "day": "Thursday",
-        "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM"
+        "time": "12pm – 2:30pm  /  6pm – 9:30pm"
       },
       "friday": {
         "day": "Friday",
-        "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM"
+        "time": "12pm – 2:30pm  /  6pm – 9:30pm"
       },
       "saturday": {
         "day": "Saturday",
-        "time": "11:30 AM – 2:30 PM / 5:30 PM – 9:30 PM"
+        "time": "12pm – 2:30pm  /  6pm – 9:30pm"
       },
       "sunday": {
         "day": "Sunday",
-        "time": "11:30 AM – 2:30 PM"
+        "time": "12pm – 2:30pm  /  6pm – 9:30pm"
       }
     }
   },
@@ -511,5 +511,31 @@
   "photos": {
     "title": "Our Gallery",
     "subtitle": "Discover our Vietnamese and Thai dishes"
+  },
+  "eventContact": {
+    "title": "Book an Event",
+    "subtitle": "Birthdays, corporate dinners, family gatherings",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "eventType": "Event type",
+    "eventTypes": {
+      "birthday": "Birthday",
+      "corporate": "Corporate dinner",
+      "wedding": "Wedding / Engagement",
+      "family": "Family gathering",
+      "catering": "Home catering",
+      "other": "Other"
+    },
+    "eventDate": "Preferred date",
+    "guests": "Number of guests",
+    "message": "Message / Special requests",
+    "submit": "Send request",
+    "submitting": "Sending…",
+    "successTitle": "Request sent!",
+    "successBody": "We will contact you as soon as possible to confirm your booking.",
+    "backHome": "Back to home",
+    "required": "Required field"
   }
 }

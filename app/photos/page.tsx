@@ -112,8 +112,9 @@ function PriceTag({ photo, locale }: { photo: Photo; locale: Locale }) {
         {photo.priceRestaurant.toFixed(2)}€
       </span>
       {photo.priceTakeaway != null && (
-        <span className="inline-flex items-center gap-1 bg-bg-alt/90 border border-border text-text text-xs px-2 py-0.5 rounded-sm tracking-wide">
-          🥡 {note && <span className="opacity-70">{note} </span>}{photo.priceTakeaway.toFixed(2)}€
+        <span className="inline-flex items-center gap-1.5 bg-bg-alt/90 border border-border text-text text-xs px-2 py-0.5 rounded-sm tracking-wide">
+          <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-accent text-bg font-bold text-[10px] leading-none shrink-0">+</span>
+          {note && <span className="opacity-70">{note} </span>}{photo.priceTakeaway.toFixed(2)}€
         </span>
       )}
     </div>
@@ -229,8 +230,9 @@ export default function PhotosPage() {
                     🍽 {photos[lightbox].priceRestaurant?.toFixed(2)}€
                   </span>
                   {photos[lightbox].priceTakeaway != null && (
-                    <span className="text-white/60 text-sm">
-                      🥡 {photos[lightbox].priceTakeaway?.toFixed(2)}€
+                    <span className="inline-flex items-center gap-1.5 text-white/60 text-sm">
+                      <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-accent text-bg font-bold text-[10px] leading-none shrink-0">+</span>
+                      {photos[lightbox].priceTakeaway?.toFixed(2)}€
                     </span>
                   )}
                 </div>

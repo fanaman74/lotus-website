@@ -451,31 +451,31 @@
     "hours": {
       "monday": {
         "day": "Maandag",
-        "time": "Gesloten"
+        "time": "12u – 14u30  /  18u – 21u30"
       },
       "tuesday": {
         "day": "Dinsdag",
-        "time": "11u30 – 14u30"
+        "time": "12u – 14u30  /  18u – 21u30"
       },
       "wednesday": {
         "day": "Woensdag",
-        "time": "11u30 – 14u30 / 17u30 – 21u30"
+        "time": "Gesloten"
       },
       "thursday": {
         "day": "Donderdag",
-        "time": "11u30 – 14u30 / 17u30 – 21u30"
+        "time": "12u – 14u30  /  18u – 21u30"
       },
       "friday": {
         "day": "Vrijdag",
-        "time": "11u30 – 14u30 / 17u30 – 21u30"
+        "time": "12u – 14u30  /  18u – 21u30"
       },
       "saturday": {
         "day": "Zaterdag",
-        "time": "11u30 – 14u30 / 17u30 – 21u30"
+        "time": "12u – 14u30  /  18u – 21u30"
       },
       "sunday": {
         "day": "Zondag",
-        "time": "11u30 – 14u30"
+        "time": "12u – 14u30  /  18u – 21u30"
       }
     }
   },
@@ -511,5 +511,31 @@
   "photos": {
     "title": "Onze Galerij",
     "subtitle": "Ontdek onze Vietnamese en Thaise gerechten"
+  },
+  "eventContact": {
+    "title": "Een Evenement Reserveren",
+    "subtitle": "Verjaardagen, bedrijfsmaaltijden, familiefeesten",
+    "firstName": "Voornaam",
+    "lastName": "Naam",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "eventType": "Type evenement",
+    "eventTypes": {
+      "birthday": "Verjaardag",
+      "corporate": "Bedrijfsmaaltijd",
+      "wedding": "Huwelijk / Verloving",
+      "family": "Familiediner",
+      "catering": "Catering aan huis",
+      "other": "Andere"
+    },
+    "eventDate": "Gewenste datum",
+    "guests": "Aantal personen",
+    "message": "Bericht / Speciale wensen",
+    "submit": "Aanvraag versturen",
+    "submitting": "Verzenden…",
+    "successTitle": "Aanvraag verzonden!",
+    "successBody": "We nemen zo spoedig mogelijk contact met u op om uw reservering te bevestigen.",
+    "backHome": "Terug naar home",
+    "required": "Verplicht veld"
   }
 }

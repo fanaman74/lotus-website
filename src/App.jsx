@@ -1,3 +1,4 @@
+import { ThemeProvider } from './context/ThemeContext';
 import { OrderProvider } from './context/OrderContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -12,19 +13,21 @@ import TakeawayPanel from './components/TakeawayPanel';
 
 export default function App() {
   return (
-    <OrderProvider>
-      <div className="min-h-screen bg-bg text-text font-body">
-        <Navbar />
-        <Hero />
-        <About />
-        <FeaturedDishes />
-        <Menu />
-        <Events />
-        <FindUs />
-        <Reservation />
-        <Footer />
-        <TakeawayPanel />
-      </div>
-    </OrderProvider>
+    <ThemeProvider>
+      <OrderProvider>
+        <div className="min-h-screen bg-bg text-text font-body">
+          <Navbar />
+          <Hero />
+          <About />
+          <FeaturedDishes />
+          <Menu />
+          <Events />
+          <FindUs />
+          <Reservation />
+          <Footer />
+          <TakeawayPanel />
+        </div>
+      </OrderProvider>
+    </ThemeProvider>
   );
 }

@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import type { Locale } from '@/lib/i18n/config';
 
 const navLinks = [
   { key: 'home', href: '#accueil' },
@@ -10,15 +12,11 @@ const navLinks = [
   { key: 'contact', href: '#contact' },
 ];
 
-const langs = ['fr', 'nl', 'en'] as const;
+const langs: Locale[] = ['fr', 'nl', 'en'];
 
-interface NavbarProps {
-  locale: string;
-  dict: { nav: Record<string, string> };
-}
-
-export default function Navbar({ locale, dict }: NavbarProps) {
+export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
+  const { locale, dict, setLocale } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -33,10 +31,6 @@ export default function Navbar({ locale, dict }: NavbarProps) {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  function switchLang(lng: string) {
-    window.location.href = `/${lng}/`;
-  }
-
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 h-[72px] flex items-center transition-all duration-[400ms] ease-in-out ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-border' : 'bg-transparent'}`}>
@@ -46,15 +40,19 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
             {navLinks.map(link => (
               <a key={link.key} href={link.href} className="text-sm uppercase tracking-wider text-text hover:text-accent transition-colors font-medium">
-                {dict.nav[link.key]}
+                {dict.nav[link.key as keyof typeof dict.nav]}
               </a>
             ))}
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 bg-bg-alt/80 rounded px-1 py-0.5">
               {langs.map(lng => (
-                <button key={lng} onClick={() => switchLang(lng)} className={`px-2.5 py-1 text-xs uppercase tracking-wider rounded transition-colors ${locale === lng ? 'bg-accent text-bg font-medium' : 'text-text-muted hover:text-text'}`}>
+                <button
+                  key={lng}
+                  onClick={() => setLocale(lng)}
+                  className={`px-2.5 py-1 text-xs uppercase tracking-wider rounded transition-colors ${locale === lng ? 'bg-accent text-bg font-medium' : 'text-text-muted hover:text-text'}`}
+                >
                   {lng}
                 </button>
               ))}
@@ -79,12 +77,16 @@ export default function Navbar({ locale, dict }: NavbarProps) {
         <div className="fixed inset-0 z-40 bg-bg/98 flex flex-col items-center justify-center gap-8 md:hidden">
           {navLinks.map(link => (
             <a key={link.key} href={link.href} onClick={() => setMenuOpen(false)} className="text-2xl font-display italic text-text hover:text-accent transition-colors">
-              {dict.nav[link.key]}
+              {dict.nav[link.key as keyof typeof dict.nav]}
             </a>
           ))}
           <div className="flex items-center gap-3 mt-4">
             {langs.map(lng => (
-              <button key={lng} onClick={() => switchLang(lng)} className={`text-sm uppercase tracking-wider px-3 py-1 border ${locale === lng ? 'border-accent text-accent' : 'border-border text-text-muted'}`}>
+              <button
+                key={lng}
+                onClick={() => { setLocale(lng); setMenuOpen(false); }}
+                className={`text-sm uppercase tracking-wider px-3 py-1 border ${locale === lng ? 'border-accent text-accent' : 'border-border text-text-muted'}`}
+              >
                 {lng}
               </button>
             ))}

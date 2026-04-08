@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface MenuItem {
@@ -35,9 +35,7 @@ export default function MenuManagementPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
-  const params = useParams();
   const router = useRouter();
-  const locale = params.locale as string;
 
   useEffect(() => {
     fetch('/api/admin/menu')
@@ -73,8 +71,6 @@ export default function MenuManagementPage() {
     return <div className="text-text-muted">Loading menu...</div>;
   }
 
-  // Group items by section -> category
-  const catMap = Object.fromEntries(categories.map((c) => [c.id, c]));
   const secCats: Record<string, Category[]> = {};
   for (const cat of categories) {
     if (!secCats[cat.section_id]) secCats[cat.section_id] = [];
@@ -91,7 +87,7 @@ export default function MenuManagementPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-display text-accent">Menu Management</h1>
         <Link
-          href={`/${locale}/admin/menu/new`}
+          href="/admin/menu/new"
           className="bg-accent text-bg px-4 py-2 rounded text-sm font-semibold hover:bg-accent/90 transition-colors"
         >
           + New Item
@@ -112,9 +108,7 @@ export default function MenuManagementPage() {
                 {(catItems[cat.id] || []).map((item) => (
                   <div
                     key={item.id}
-                    className={`flex items-center justify-between bg-surface rounded px-4 py-2 text-sm ${
-                      !item.active ? 'opacity-50' : ''
-                    }`}
+                    className={`flex items-center justify-between bg-surface rounded px-4 py-2 text-sm ${!item.active ? 'opacity-50' : ''}`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       {item.num && (
@@ -138,16 +132,12 @@ export default function MenuManagementPage() {
                       </span>
                       <button
                         onClick={() => handleToggleActive(item)}
-                        className={`text-xs px-2 py-0.5 rounded border ${
-                          item.active
-                            ? 'border-green-500/50 text-green-300'
-                            : 'border-red-500/50 text-red-300'
-                        }`}
+                        className={`text-xs px-2 py-0.5 rounded border ${item.active ? 'border-green-500/50 text-green-300' : 'border-red-500/50 text-red-300'}`}
                       >
                         {item.active ? 'Active' : 'Inactive'}
                       </button>
                       <Link
-                        href={`/${locale}/admin/menu/${item.id}`}
+                        href={`/admin/menu/${item.id}`}
                         className="text-accent/70 hover:text-accent text-xs"
                       >
                         Edit

@@ -6,16 +6,11 @@ import StatusDropdown from './StatusDropdown';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminDashboard({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
+export default async function AdminDashboard() {
   const cookieStore = await cookies();
   const token = cookieStore.get('lotus_admin_token')?.value;
   if (!token || !(await verifyAdminSession(token))) {
-    redirect(`/${locale}/admin/login`);
+    redirect('/admin/login');
   }
 
   const supabase = createServerClient();

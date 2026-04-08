@@ -1,15 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const params = useParams();
-  const locale = params.locale as string;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,7 +23,7 @@ export default function AdminLoginPage() {
       const data = await res.json();
 
       if (data.success) {
-        router.push(`/${locale}/admin`);
+        router.push('/admin');
       } else {
         setError(data.error || 'Login failed');
       }

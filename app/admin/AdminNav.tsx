@@ -3,18 +3,18 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
-export default function AdminNav({ locale }: { locale: string }) {
+export default function AdminNav() {
   const pathname = usePathname();
   const router = useRouter();
 
   const links = [
-    { href: `/${locale}/admin`, label: 'Dashboard' },
-    { href: `/${locale}/admin/menu`, label: 'Menu' },
+    { href: '/admin', label: 'Dashboard' },
+    { href: '/admin/menu', label: 'Menu' },
   ];
 
   async function handleLogout() {
     await fetch('/api/admin/logout', { method: 'POST' });
-    router.push(`/${locale}/admin/login`);
+    router.push('/admin/login');
   }
 
   return (
@@ -27,9 +27,7 @@ export default function AdminNav({ locale }: { locale: string }) {
               key={link.href}
               href={link.href}
               className={`text-sm transition-colors ${
-                pathname === link.href
-                  ? 'text-accent'
-                  : 'text-text-muted hover:text-text'
+                pathname === link.href ? 'text-accent' : 'text-text-muted hover:text-text'
               }`}
             >
               {link.label}

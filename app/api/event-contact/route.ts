@@ -14,14 +14,38 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { first_name, last_name, email, phone, event_type, event_date, guests, message } = body;
+    const { first_name, last_name, email, phone, event_type, event_date, guests, message, code } = body;
 
     if (!first_name || !last_name || !email || !event_type) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1. Save to Supabase
     const supabase = createServerClient();
+
+    // Verify OTP
+    if (!code) {
+      return NextResponse.json({ error: 'OTP code required' }, { status: 400 });
+    }
+
+    const { data: otps } = await supabase
+      .from('lotus_otps')
+      .select('id, code, expires_at, used')
+      .eq('email', email)
+      .eq('used', false)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    const otp = otps?.[0];
+    if (!otp || otp.code !== code) {
+      return NextResponse.json({ error: 'invalid' }, { status: 400 });
+    }
+    if (new Date(otp.expires_at) < new Date()) {
+      return NextResponse.json({ error: 'expired' }, { status: 400 });
+    }
+
+    await supabase.from('lotus_otps').update({ used: true }).eq('id', otp.id);
+
+    // 1. Save to Supabase
     const { error: dbError } = await supabase.from('lotus_event_requests').insert({
       first_name,
       last_name,

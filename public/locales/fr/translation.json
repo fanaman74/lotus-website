@@ -23,6 +23,29 @@
   "menu": {
     "title": "Notre Carte",
     "addButton": "+ Ajouter",
+    "sections": {
+      "thai": "Spécialités Thaïlandaises",
+      "viet": "Spécialités Vietnamiennes"
+    },
+    "subcategories": {
+      "thai_potages": "Potages",
+      "thai_entrees": "Entrées",
+      "thai_volailles": "Volailles",
+      "thai_viandes": "Porc & Bœuf",
+      "thai_poissons": "Poissons & Crustacés",
+      "thai_riz": "Riz",
+      "viet_potages": "Potages",
+      "viet_entrees": "Entrées",
+      "viet_dimsum": "Dim Sum (à la vapeur)",
+      "viet_volailles": "Volailles",
+      "viet_viandes": "Porc & Bœuf",
+      "viet_poissons": "Poissons & Crustacés",
+      "viet_riz": "Riz",
+      "viet_nouilles": "Nouilles",
+      "viet_vegetariens": "Végétariens"
+    },
+    "priceRestaurant": "Rest.",
+    "priceTraiteur": "Trait.",
     "categories": {
       "starters": "Entrées",
       "mains": "Plats",

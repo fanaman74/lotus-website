@@ -23,6 +23,29 @@
   "menu": {
     "title": "Onze Kaart",
     "addButton": "+ Toevoegen",
+    "sections": {
+      "thai": "Thaise Specialiteiten",
+      "viet": "Vietnamese Specialiteiten"
+    },
+    "subcategories": {
+      "thai_potages": "Soepen",
+      "thai_entrees": "Voorgerechten",
+      "thai_volailles": "Gevogelte",
+      "thai_viandes": "Varkensvlees & Rundvlees",
+      "thai_poissons": "Vis & Schaaldieren",
+      "thai_riz": "Rijst",
+      "viet_potages": "Soepen",
+      "viet_entrees": "Voorgerechten",
+      "viet_dimsum": "Dim Sum (gestoomd)",
+      "viet_volailles": "Gevogelte",
+      "viet_viandes": "Varkensvlees & Rundvlees",
+      "viet_poissons": "Vis & Schaaldieren",
+      "viet_riz": "Rijst",
+      "viet_nouilles": "Noedels",
+      "viet_vegetariens": "Vegetarisch"
+    },
+    "priceRestaurant": "Rest.",
+    "priceTraiteur": "Afh.",
     "categories": {
       "starters": "Voorgerechten",
       "mains": "Hoofdgerechten",

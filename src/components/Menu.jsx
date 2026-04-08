@@ -50,7 +50,7 @@ export default function Menu() {
                   : 'border border-border text-text-muted hover:text-text'
               }`}
             >
-              {section.id === 'thai' ? 'Thailandaises' : 'Vietnamiennes'}
+              {t('menu.sections.' + section.id)}
             </button>
           ))}
         </div>
@@ -68,7 +68,7 @@ export default function Menu() {
                     : 'text-text-muted hover:text-text'
                 }`}
               >
-                {cat.name}
+                {t('menu.subcategories.' + cat.id)}
               </button>
             ))}
           </div>
@@ -76,8 +76,8 @@ export default function Menu() {
 
         {/* Price column headers */}
         <div className="flex items-center justify-end gap-4 mb-4 pr-2 text-xs uppercase tracking-wider text-text-muted">
-          <span className="w-14 text-center">Rest.</span>
-          <span className="w-14 text-center">Trait.</span>
+          <span className="w-14 text-center">{t('menu.priceRestaurant')}</span>
+          <span className="w-14 text-center">{t('menu.priceTraiteur')}</span>
           <span className="w-10" />
         </div>
 

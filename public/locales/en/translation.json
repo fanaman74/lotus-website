@@ -23,6 +23,29 @@
   "menu": {
     "title": "Our Menu",
     "addButton": "+ Add",
+    "sections": {
+      "thai": "Thai Specialities",
+      "viet": "Vietnamese Specialities"
+    },
+    "subcategories": {
+      "thai_potages": "Soups",
+      "thai_entrees": "Starters",
+      "thai_volailles": "Poultry",
+      "thai_viandes": "Pork & Beef",
+      "thai_poissons": "Fish & Seafood",
+      "thai_riz": "Rice",
+      "viet_potages": "Soups",
+      "viet_entrees": "Starters",
+      "viet_dimsum": "Dim Sum (steamed)",
+      "viet_volailles": "Poultry",
+      "viet_viandes": "Pork & Beef",
+      "viet_poissons": "Fish & Seafood",
+      "viet_riz": "Rice",
+      "viet_nouilles": "Noodles",
+      "viet_vegetariens": "Vegetarian"
+    },
+    "priceRestaurant": "Dine-in",
+    "priceTraiteur": "T/away",
     "categories": {
       "starters": "Starters",
       "mains": "Mains",

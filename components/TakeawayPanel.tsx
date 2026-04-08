@@ -1,60 +1,141 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useOrder } from './OrderProvider';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-type OrderDict = {
-  title: string;
-  close: string;
-  total: string;
-  emailOrder: string;
-  reserveOrder: string;
-  empty: string;
-};
+type Step = 'cart' | 'details' | 'otp' | 'success';
 
-interface TakeawayPanelProps {
-  dict: OrderDict;
-}
-
-export default function TakeawayPanel({ dict }: TakeawayPanelProps) {
+export default function TakeawayPanel() {
   const { items, updateQuantity, removeItem, clearOrder, total } = useOrder();
+  const { locale, dict } = useLanguage();
+  const t = (dict as any).order as Record<string, string>;
+
   const [open, setOpen] = useState(false);
+  const [step, setStep] = useState<Step>('cart');
+
+  // Details form
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [sending, setSending] = useState(false);
+  const [detailsError, setDetailsError] = useState('');
+
+  // OTP
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [verifying, setVerifying] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
-  async function handleEmailOrder() {
-    const lines = items.map(i => `${i.quantity}x ${i.name} - ${(i.price * i.quantity).toFixed(2)}E`).join('\n');
-    const body = `${lines}\n\nTotal: ${total.toFixed(2)}E`;
+  function close() {
+    setOpen(false);
+  }
 
+  function reset() {
+    setStep('cart');
+    setName(''); setEmail(''); setPhone('');
+    setOtp(['', '', '', '', '', '']);
+    setSending(false); setVerifying(false);
+    setDetailsError(''); setOtpError('');
+  }
+
+  // Step 1→2: send OTP
+  async function handleSendOtp(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    setDetailsError('');
     try {
-      const res = await fetch('/api/order', {
+      const res = await fetch('/api/otp/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, total }),
+        body: JSON.stringify({ email, name }),
       });
-      if (!res.ok) throw new Error('API error');
-      clearOrder();
-      setOpen(false);
+      const data = await res.json();
+      if (!res.ok) {
+        setDetailsError(data.error || 'Error');
+        return;
+      }
+      setStep('otp');
+      setTimeout(() => inputRefs.current[0]?.focus(), 100);
     } catch {
-      const subject = encodeURIComponent('Commande Traiteur Lotus');
-      const mailBody = encodeURIComponent(body);
-      window.open(`mailto:info@lotus-laeken.be?subject=${subject}&body=${mailBody}`, '_blank');
+      setDetailsError('Network error');
+    } finally {
+      setSending(false);
     }
   }
 
-  function handleReserveOrder() {
-    setOpen(false);
-    const el = document.getElementById('contact');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  // OTP digit input handling
+  function handleOtpInput(i: number, val: string) {
+    const digit = val.replace(/\D/, '').slice(-1);
+    const next = [...otp];
+    next[i] = digit;
+    setOtp(next);
+    if (digit && i < 5) inputRefs.current[i + 1]?.focus();
+    // Auto-submit when all 6 filled
+    if (digit && i === 5 && next.every(d => d)) {
+      verifyOtp(next.join(''));
+    }
   }
 
-  if (count === 0 && !open) return null;
+  function handleOtpKeyDown(i: number, e: React.KeyboardEvent) {
+    if (e.key === 'Backspace' && !otp[i] && i > 0) {
+      inputRefs.current[i - 1]?.focus();
+    }
+  }
+
+  function handleOtpPaste(e: React.ClipboardEvent) {
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (pasted.length === 6) {
+      setOtp(pasted.split(''));
+      inputRefs.current[5]?.focus();
+      verifyOtp(pasted);
+    }
+    e.preventDefault();
+  }
+
+  // Step 2→3: verify OTP + place order
+  async function verifyOtp(code: string) {
+    setVerifying(true);
+    setOtpError('');
+    try {
+      const res = await fetch('/api/otp/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          code,
+          customerName: name,
+          customerPhone: phone || undefined,
+          items,
+          total,
+          locale,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setOtpError(t.otpError || 'Code incorrect ou expiré');
+        setOtp(['', '', '', '', '', '']);
+        setTimeout(() => inputRefs.current[0]?.focus(), 50);
+        return;
+      }
+      clearOrder();
+      setStep('success');
+    } catch {
+      setOtpError('Network error');
+    } finally {
+      setVerifying(false);
+    }
+  }
+
+  if (count === 0 && !open && step !== 'success') return null;
 
   return (
     <>
       {/* Floating cart badge */}
       {!open && count > 0 && (
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => { setOpen(true); setStep('cart'); }}
           className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent text-bg flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
           aria-label="Open cart"
         >
@@ -67,84 +148,215 @@ export default function TakeawayPanel({ dict }: TakeawayPanelProps) {
         </button>
       )}
 
-      {/* Slide-in panel */}
+      {/* Panel */}
       {open && (
         <>
-          {/* Backdrop */}
-          <div className="fixed inset-0 z-50 bg-black/40" onClick={() => setOpen(false)} />
-
-          {/* Panel */}
+          <div className="fixed inset-0 z-50 bg-black/40" onClick={close} />
           <div className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-[400px] bg-bg border-l border-border flex flex-col shadow-2xl">
+
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-              <h3 className="font-display text-xl italic">{dict.title}</h3>
-              <button onClick={() => setOpen(false)} className="text-text-muted hover:text-text transition-colors text-sm">
-                {dict.close}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
+              <div className="flex items-center gap-3">
+                {(step === 'details' || step === 'otp') && (
+                  <button
+                    onClick={() => setStep(step === 'otp' ? 'details' : 'cart')}
+                    className="text-text-muted hover:text-text transition-colors"
+                    aria-label="Back"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                )}
+                <h3 className="font-display text-xl italic">
+                  {step === 'cart' && t.title}
+                  {step === 'details' && t.customerName?.replace('Votre ', '').replace('Uw ', '').replace('Your ', '') || 'Commande'}
+                  {step === 'otp' && t.otpLabel}
+                  {step === 'success' && t.successTitle}
+                </h3>
+              </div>
+              <button onClick={close} className="text-text-muted hover:text-text transition-colors text-sm">
+                {t.close}
               </button>
             </div>
 
-            {/* Items */}
-            <div className="flex-1 overflow-y-auto px-6 py-4">
-              {items.length === 0 ? (
-                <p className="text-text-muted text-center py-12">{dict.empty}</p>
-              ) : (
-                <div className="space-y-4">
-                  {items.map(item => (
-                    <div key={item.id} className="flex items-start gap-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{item.name}</p>
-                        {item.desc && <p className="text-xs text-text-muted truncate">{item.desc}</p>}
-                        <p className="text-sm text-accent mt-1">{(item.price * item.quantity).toFixed(2)}&euro;</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-7 h-7 rounded-full border border-border text-text-muted hover:border-accent hover:text-accent transition-colors flex items-center justify-center text-xs"
-                        >
-                          &minus;
-                        </button>
-                        <span className="text-sm w-5 text-center">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-7 h-7 rounded-full border border-border text-text-muted hover:border-accent hover:text-accent transition-colors flex items-center justify-center text-xs"
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="ml-1 text-text-muted hover:text-red-400 transition-colors"
-                          aria-label={`Remove ${item.name}`}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                      </div>
+            {/* ── STEP: CART ── */}
+            {step === 'cart' && (
+              <>
+                <div className="flex-1 overflow-y-auto px-6 py-4">
+                  {items.length === 0 ? (
+                    <p className="text-text-muted text-center py-12">{t.empty}</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {items.map(item => (
+                        <div key={item.id} className="flex items-start gap-3">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{item.name}</p>
+                            {item.desc && <p className="text-xs text-text-muted truncate">{item.desc}</p>}
+                            <p className="text-sm text-accent mt-1">{(item.price * item.quantity).toFixed(2)}&euro;</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-7 h-7 rounded-full border border-border text-text-muted hover:border-accent hover:text-accent transition-colors flex items-center justify-center text-xs">&minus;</button>
+                            <span className="text-sm w-5 text-center">{item.quantity}</span>
+                            <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-7 h-7 rounded-full border border-border text-text-muted hover:border-accent hover:text-accent transition-colors flex items-center justify-center text-xs">+</button>
+                            <button onClick={() => removeItem(item.id)} className="ml-1 text-text-muted hover:text-red-400 transition-colors" aria-label={`Remove ${item.name}`}>
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
+                  )}
+                </div>
+                {items.length > 0 && (
+                  <div className="border-t border-border px-6 py-4 space-y-3 shrink-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm uppercase tracking-wider text-text-muted">{t.total}</span>
+                      <span className="font-display text-xl text-accent">{total.toFixed(2)}&euro;</span>
+                    </div>
+                    <button
+                      onClick={() => setStep('details')}
+                      className="w-full py-3 text-sm uppercase tracking-wider bg-accent text-bg hover:bg-accent/90 transition-colors"
+                    >
+                      {t.emailOrder}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* ── STEP: DETAILS ── */}
+            {step === 'details' && (
+              <form onSubmit={handleSendOtp} className="flex flex-col flex-1 overflow-y-auto">
+                <div className="flex-1 px-6 py-6 space-y-4">
+                  <p className="text-xs text-text-muted leading-relaxed">{t.otpNote}</p>
+
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-text-muted mb-1.5">{t.customerName} *</label>
+                    <input
+                      type="text" required
+                      value={name} onChange={e => setName(e.target.value)}
+                      className="w-full bg-transparent border border-border rounded-sm px-4 py-2.5 text-sm text-text focus:outline-none focus:border-accent transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-text-muted mb-1.5">{t.customerEmail} *</label>
+                    <input
+                      type="email" required
+                      value={email} onChange={e => setEmail(e.target.value)}
+                      className="w-full bg-transparent border border-border rounded-sm px-4 py-2.5 text-sm text-text focus:outline-none focus:border-accent transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-text-muted mb-1.5">{t.customerPhone}</label>
+                    <input
+                      type="tel"
+                      value={phone} onChange={e => setPhone(e.target.value)}
+                      placeholder="+32 …"
+                      className="w-full bg-transparent border border-border rounded-sm px-4 py-2.5 text-sm text-text focus:outline-none focus:border-accent transition-colors"
+                    />
+                  </div>
+
+                  {detailsError && (
+                    <p className="text-red-400 text-xs">{detailsError}</p>
+                  )}
+                </div>
+
+                {/* Order summary mini */}
+                <div className="px-6 py-3 border-t border-border/50 bg-bg-alt/40 shrink-0">
+                  <div className="flex justify-between text-xs text-text-muted mb-0.5">
+                    <span>{count} article{count > 1 ? 's' : ''}</span>
+                    <span className="text-accent font-semibold">{total.toFixed(2)}€</span>
+                  </div>
+                </div>
+
+                <div className="px-6 py-4 border-t border-border shrink-0">
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    className="w-full py-3 text-sm uppercase tracking-wider bg-accent text-bg hover:bg-accent/90 transition-colors disabled:opacity-50"
+                  >
+                    {sending ? t.sending : t.sendOtp}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* ── STEP: OTP ── */}
+            {step === 'otp' && (
+              <div className="flex flex-col flex-1 px-6 py-6">
+                <p className="text-sm text-text-muted mb-1">{t.otpSentTo}</p>
+                <p className="text-sm font-medium text-accent mb-8 truncate">{email}</p>
+
+                <p className="text-xs uppercase tracking-widest text-text-muted mb-4">{t.otpLabel}</p>
+
+                {/* 6-digit input */}
+                <div className="flex gap-2 justify-center mb-6" onPaste={handleOtpPaste}>
+                  {otp.map((digit, i) => (
+                    <input
+                      key={i}
+                      ref={el => { inputRefs.current[i] = el; }}
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={digit}
+                      onChange={e => handleOtpInput(i, e.target.value)}
+                      onKeyDown={e => handleOtpKeyDown(i, e)}
+                      disabled={verifying}
+                      className="w-11 h-14 text-center text-xl font-mono font-bold border border-border rounded-sm bg-transparent text-text focus:outline-none focus:border-accent transition-colors disabled:opacity-40"
+                    />
                   ))}
                 </div>
-              )}
-            </div>
 
-            {/* Footer */}
-            {items.length > 0 && (
-              <div className="border-t border-border px-6 py-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm uppercase tracking-wider text-text-muted">{dict.total}</span>
-                  <span className="font-display text-xl text-accent">{total.toFixed(2)}&euro;</span>
-                </div>
+                {otpError && (
+                  <p className="text-red-400 text-xs text-center mb-4">{otpError}</p>
+                )}
+
+                {verifying && (
+                  <p className="text-text-muted text-xs text-center">{t.verifying}</p>
+                )}
+
+                {!verifying && (
+                  <button
+                    onClick={() => verifyOtp(otp.join(''))}
+                    disabled={otp.some(d => !d)}
+                    className="w-full py-3 text-sm uppercase tracking-wider bg-accent text-bg hover:bg-accent/90 transition-colors disabled:opacity-40 mt-auto"
+                  >
+                    {t.verify}
+                  </button>
+                )}
+
+                {/* Resend code */}
                 <button
-                  onClick={handleEmailOrder}
-                  className="w-full py-3 text-sm uppercase tracking-wider bg-accent text-bg hover:bg-accent/90 transition-colors"
+                  onClick={() => { setOtp(['', '', '', '', '', '']); handleSendOtp({ preventDefault: () => {} } as any); }}
+                  className="mt-3 text-xs text-text-muted hover:text-text underline text-center"
                 >
-                  {dict.emailOrder}
-                </button>
-                <button
-                  onClick={handleReserveOrder}
-                  className="w-full py-3 text-sm uppercase tracking-wider border border-border text-text-muted hover:border-text hover:text-text transition-colors"
-                >
-                  {dict.reserveOrder}
+                  Renvoyer le code
                 </button>
               </div>
             )}
+
+            {/* ── STEP: SUCCESS ── */}
+            {step === 'success' && (
+              <div className="flex flex-col flex-1 items-center justify-center px-6 text-center gap-5">
+                <div className="w-16 h-16 rounded-full bg-accent/15 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-display italic text-2xl mb-2">{t.successTitle}</h4>
+                  <p className="text-text-muted text-sm leading-relaxed">{t.successBody}</p>
+                </div>
+                <button
+                  onClick={() => { reset(); close(); }}
+                  className="border border-accent text-accent px-8 py-2.5 text-xs uppercase tracking-widest hover:bg-accent hover:text-bg transition-colors"
+                >
+                  {t.newOrder}
+                </button>
+              </div>
+            )}
+
           </div>
         </>
       )}

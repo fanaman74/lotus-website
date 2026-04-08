@@ -503,7 +503,23 @@
     "total": "Total",
     "emailOrder": "Commander par Email",
     "reserveOrder": "Réserver et Commander",
-    "empty": "Votre panier est vide"
+    "empty": "Votre panier est vide",
+    "customerName": "Votre nom",
+    "customerEmail": "Email",
+    "customerPhone": "Téléphone (optionnel)",
+    "sendOtp": "Confirmer ma commande",
+    "sending": "Envoi…",
+    "otpSentTo": "Code envoyé à",
+    "otpLabel": "Code de vérification",
+    "otpPlaceholder": "______",
+    "verify": "Valider",
+    "verifying": "Vérification…",
+    "otpError": "Code incorrect ou expiré",
+    "back": "Retour",
+    "successTitle": "Commande confirmée !",
+    "successBody": "Nous avons reçu votre commande et vous enverrons une confirmation par email.",
+    "newOrder": "Nouvelle commande",
+    "otpNote": "Un code à 6 chiffres vous sera envoyé pour confirmer votre email."
   },
   "footer": {
     "copyright": "© 2026 Traiteur-Restaurant Lotus · Laeken, Bruxelles"

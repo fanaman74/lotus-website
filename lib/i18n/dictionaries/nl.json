@@ -503,7 +503,23 @@
     "total": "Totaal",
     "emailOrder": "Bestellen per E-mail",
     "reserveOrder": "Reserveren en Bestellen",
-    "empty": "Uw winkelmandje is leeg"
+    "empty": "Uw winkelmandje is leeg",
+    "customerName": "Uw naam",
+    "customerEmail": "E-mail",
+    "customerPhone": "Telefoon (optioneel)",
+    "sendOtp": "Bestelling bevestigen",
+    "sending": "Verzenden…",
+    "otpSentTo": "Code verzonden naar",
+    "otpLabel": "Verificatiecode",
+    "otpPlaceholder": "______",
+    "verify": "Bevestigen",
+    "verifying": "Verificatie…",
+    "otpError": "Onjuiste of verlopen code",
+    "back": "Terug",
+    "successTitle": "Bestelling bevestigd!",
+    "successBody": "We hebben uw bestelling ontvangen en sturen u een bevestiging per e-mail.",
+    "newOrder": "Nieuwe bestelling",
+    "otpNote": "U ontvangt een 6-cijferige code om uw e-mail te bevestigen."
   },
   "footer": {
     "copyright": "© 2026 Traiteur-Restaurant Lotus · Laken, Brussel"

@@ -54,7 +54,7 @@ export default function ClientHomePage() {
       <ScrollReveal><FindUs dict={dict.findUs} /></ScrollReveal>
       <Reservation dict={dict.reservation} locale={locale} />
       <Footer dict={{ nav: dict.nav, findUs: dict.findUs, footer: dict.footer }} />
-      <TakeawayPanel dict={dict.order} />
+      <TakeawayPanel />
     </>
   );
 }

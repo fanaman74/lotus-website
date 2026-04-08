@@ -41,7 +41,7 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="w-full max-w-[1200px] mx-auto px-6 flex items-center justify-between">
+      <div className="w-full max-w-[1200px] mx-auto px-6 flex items-center">
         {/* Wordmark */}
         <a
           href="#accueil"
@@ -50,8 +50,8 @@ export default function Navbar() {
           LOTUS
         </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        {/* Desktop nav — centered */}
+        <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
           {navLinks.map((link) => (
             <a
               key={link.key}
@@ -61,21 +61,24 @@ export default function Navbar() {
               {t(link.key)}
             </a>
           ))}
+        </div>
 
+        {/* Right side: language toggle + theme */}
+        <div className="hidden md:flex items-center gap-3">
           {/* Language toggle */}
-          <div className="flex items-center gap-1 ml-4">
-            {['fr', 'nl', 'en'].map((lng, idx) => (
-              <span key={lng} className="flex items-center">
-                {idx > 0 && <span className="text-text-muted mx-1">|</span>}
-                <button
-                  onClick={() => i18n.changeLanguage(lng)}
-                  className={`text-xs uppercase tracking-wider transition-colors ${
-                    i18n.language === lng ? 'text-accent' : 'text-text-muted hover:text-text'
-                  }`}
-                >
-                  {lng}
-                </button>
-              </span>
+          <div className="flex items-center gap-1">
+            {['fr', 'nl', 'en'].map((lng) => (
+              <button
+                key={lng}
+                onClick={() => i18n.changeLanguage(lng)}
+                className={`px-2.5 py-1 text-xs uppercase tracking-wider rounded transition-colors ${
+                  i18n.language === lng
+                    ? 'bg-accent text-bg font-medium'
+                    : 'text-text-muted hover:text-text'
+                }`}
+              >
+                {lng}
+              </button>
             ))}
           </div>
 

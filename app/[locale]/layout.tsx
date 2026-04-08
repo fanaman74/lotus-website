@@ -1,0 +1,32 @@
+import type { Metadata } from 'next';
+import { Chango, Jost, Cormorant_Garamond } from 'next/font/google';
+import '../globals.css';
+
+const chango = Chango({ weight: '400', subsets: ['latin'], variable: '--font-chango', display: 'swap' });
+const jost = Jost({ subsets: ['latin'], variable: '--font-jost', display: 'swap' });
+const cormorant = Cormorant_Garamond({
+  weight: ['300', '400', '600'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  title: 'Lotus — Restaurant Vietnamien & Thaïlandais | Laeken, Bruxelles',
+  description: 'Traiteur-Restaurant Lotus — La cuisine Vietnamienne & Thaïlandaise de Laeken, Bruxelles.',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="fr" suppressHydrationWarning className={`${chango.variable} ${jost.variable} ${cormorant.variable}`}>
+      <body className="font-body bg-bg text-text">
+        {children}
+      </body>
+    </html>
+  );
+}

@@ -5,11 +5,12 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import type { Locale } from '@/lib/i18n/config';
 
 const navLinks = [
-  { key: 'home', href: '#accueil' },
-  { key: 'menu', href: '#menu' },
-  { key: 'events', href: '#evenements' },
-  { key: 'info', href: '#informations' },
-  { key: 'contact', href: '#contact' },
+  { key: 'home', href: '#accueil', page: false },
+  { key: 'menu', href: '#menu', page: false },
+  { key: 'photos', href: '/photos', page: true },
+  { key: 'events', href: '#evenements', page: false },
+  { key: 'info', href: '#informations', page: false },
+  { key: 'contact', href: '#contact', page: false },
 ];
 
 const langs: Locale[] = ['fr', 'nl', 'en'];
@@ -40,7 +41,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
             {navLinks.map(link => (
               <a key={link.key} href={link.href} className="text-sm uppercase tracking-wider text-text hover:text-accent transition-colors font-medium">
-                {dict.nav[link.key as keyof typeof dict.nav]}
+                {(dict.nav as Record<string, string>)[link.key]}
               </a>
             ))}
           </div>
@@ -77,7 +78,7 @@ export default function Navbar() {
         <div className="fixed inset-0 z-40 bg-bg/98 flex flex-col items-center justify-center gap-8 md:hidden">
           {navLinks.map(link => (
             <a key={link.key} href={link.href} onClick={() => setMenuOpen(false)} className="text-2xl font-display italic text-text hover:text-accent transition-colors">
-              {dict.nav[link.key as keyof typeof dict.nav]}
+              {(dict.nav as Record<string, string>)[link.key]}
             </a>
           ))}
           <div className="flex items-center gap-3 mt-4">

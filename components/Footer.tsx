@@ -2,6 +2,7 @@ type FooterDict = {
   nav: {
     home: string;
     menu: string;
+    photos: string;
     events: string;
     info: string;
     contact: string;
@@ -18,6 +19,7 @@ type FooterDict = {
 const navLinks = [
   { key: 'home' as const, href: '#accueil' },
   { key: 'menu' as const, href: '#menu' },
+  { key: 'photos' as const, href: '/photos' },
   { key: 'events' as const, href: '#evenements' },
   { key: 'info' as const, href: '#informations' },
   { key: 'contact' as const, href: '#contact' },

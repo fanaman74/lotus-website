@@ -78,7 +78,7 @@ export default function Menu() {
         <div className="flex items-center justify-end gap-4 mb-4 pr-2 text-xs uppercase tracking-wider text-text-muted">
           <span className="w-14 text-center">Rest.</span>
           <span className="w-14 text-center">Trait.</span>
-          <span className="w-20" />
+          <span className="w-10" />
         </div>
 
         {/* Menu items */}
@@ -108,16 +108,17 @@ export default function Menu() {
                   <span className="w-14 text-center text-accent font-display">
                     {item.priceTraiteur !== null ? item.priceTraiteur.toFixed(2) : '\u2014'}
                   </span>
-                  <div className="w-20">
-                    {item.priceTraiteur !== null ? (
+                  <div className="w-10">
+                    {item.priceTraiteur !== null && (
                       <button
                         onClick={() => handleAddItem(item)}
-                        className="border border-accent-alt text-accent-alt px-3 py-1 text-xs rounded hover:bg-accent-alt hover:text-bg transition-colors"
+                        className="w-8 h-8 flex items-center justify-center rounded-full border border-accent-alt text-accent-alt hover:bg-accent-alt hover:text-bg transition-colors"
+                        aria-label={`Add ${item.name} to cart`}
                       >
-                        + {t('menu.addButton')}
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
                       </button>
-                    ) : (
-                      <span />
                     )}
                   </div>
                 </div>

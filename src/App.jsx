@@ -5,6 +5,9 @@ import About from './components/About';
 import FeaturedDishes from './components/FeaturedDishes';
 import Menu from './components/Menu';
 import Events from './components/Events';
+import FindUs from './components/FindUs';
+import Reservation from './components/Reservation';
+import Footer from './components/Footer';
 import TakeawayPanel from './components/TakeawayPanel';
 
 export default function App() {
@@ -17,6 +20,9 @@ export default function App() {
         <FeaturedDishes />
         <Menu />
         <Events />
+        <FindUs />
+        <Reservation />
+        <Footer />
         <TakeawayPanel />
       </div>
     </OrderProvider>

@@ -2,15 +2,16 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { usePathname } from 'next/navigation';
 import type { Locale } from '@/lib/i18n/config';
 
 const navLinks = [
-  { key: 'home', href: '#accueil', page: false },
-  { key: 'menu', href: '#menu', page: false },
-  { key: 'photos', href: '/photos', page: true },
-  { key: 'events', href: '#evenements', page: false },
-  { key: 'info', href: '#informations', page: false },
-  { key: 'contact', href: '#contact', page: false },
+  { key: 'home', href: '#accueil', anchor: true },
+  { key: 'menu', href: '#menu', anchor: true },
+  { key: 'photos', href: '/photos', anchor: false },
+  { key: 'events', href: '#evenements', anchor: true },
+  { key: 'info', href: '#informations', anchor: true },
+  { key: 'contact', href: '#contact', anchor: true },
 ];
 
 const langs: Locale[] = ['fr', 'nl', 'en'];
@@ -18,8 +19,16 @@ const langs: Locale[] = ['fr', 'nl', 'en'];
 export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
   const { locale, dict, setLocale } = useLanguage();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // On non-home pages, anchor links must go back to /#section
+  const isHome = pathname === '/';
+  function resolveHref(link: typeof navLinks[0]) {
+    if (!link.anchor) return link.href;
+    return isHome ? link.href : `/${link.href}`;
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -36,11 +45,15 @@ export default function Navbar() {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 h-[72px] flex items-center transition-all duration-[400ms] ease-in-out ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-border' : 'bg-transparent'}`}>
         <div className="w-full max-w-[1200px] mx-auto px-6 flex items-center">
-          <a href="#accueil" className="font-display uppercase tracking-[0.15em] text-2xl text-accent no-underline">LOTUS</a>
+          <a href={isHome ? '#accueil' : '/'} className="font-display uppercase tracking-[0.15em] text-2xl text-accent no-underline">LOTUS</a>
 
           <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
             {navLinks.map(link => (
-              <a key={link.key} href={link.href} className="text-sm uppercase tracking-wider text-text hover:text-accent transition-colors font-medium">
+              <a
+                key={link.key}
+                href={resolveHref(link)}
+                className={`text-sm uppercase tracking-wider hover:text-accent transition-colors font-medium ${pathname === link.href ? 'text-accent' : 'text-text'}`}
+              >
                 {(dict.nav as Record<string, string>)[link.key]}
               </a>
             ))}
@@ -77,7 +90,7 @@ export default function Navbar() {
       {menuOpen && (
         <div className="fixed inset-0 z-40 bg-bg/98 flex flex-col items-center justify-center gap-8 md:hidden">
           {navLinks.map(link => (
-            <a key={link.key} href={link.href} onClick={() => setMenuOpen(false)} className="text-2xl font-display italic text-text hover:text-accent transition-colors">
+            <a key={link.key} href={resolveHref(link)} onClick={() => setMenuOpen(false)} className="text-2xl font-display italic text-text hover:text-accent transition-colors">
               {(dict.nav as Record<string, string>)[link.key]}
             </a>
           ))}

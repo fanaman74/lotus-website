@@ -6,8 +6,8 @@
   --color-surface: #231f1a;
   --color-text: #f0ebe0;
   --color-text-muted: #9a9080;
-  --color-accent: #c8925a;
-  --color-accent-alt: #4a7c59;
+  --color-accent: #6db840;
+  --color-accent-alt: #a8cc6a;
   --color-border: rgba(255, 255, 255, 0.08);
 
   --font-display: var(--font-chango, 'Chango'), var(--font-cormorant, 'Cormorant Garamond'), Georgia, serif;
@@ -62,8 +62,8 @@ body {
   --color-surface: #e8e2da;
   --color-text: #1a1814;
   --color-text-muted: #6b6358;
-  --color-accent: #b07d3e;
-  --color-accent-alt: #3a6949;
+  --color-accent: #3d7022;
+  --color-accent-alt: #5a9e38;
   --color-border: rgba(0, 0, 0, 0.08);
 }
 

@@ -138,7 +138,9 @@ export default function Menu({ sections, dict }: MenuProps) {
                       className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center text-sm hover:bg-accent hover:text-bg transition-colors opacity-0 group-hover:opacity-100"
                       aria-label={`Add ${item.name}`}
                     >
-                      +
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 11H4L5 9z" />
+                        </svg>
                     </button>
                   )}
                 </span>
